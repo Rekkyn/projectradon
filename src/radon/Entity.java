@@ -26,6 +26,8 @@ public class Entity {
     Random rand = new Random();
     public float restitution = 0.8F;
     public boolean onGround;
+    /** 0 = not on wall, 1 = left wall, 2 = right wall */
+    public byte onWall;
     
     public Entity(float x, float y) {
         this.x = x;
@@ -42,7 +44,7 @@ public class Entity {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(col);
         g.pushTransform();
-        g.translate(World.partialTicks * velocity.x, World.partialTicks * velocity.y);
+        g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
         g.fillRect(x - width / 2, y - height / 2, width, height);
         g.setColor(Color.black);
         // g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
@@ -56,7 +58,7 @@ public class Entity {
         
         prevVelocity.set(velocity);
         
-        invMass = 1F / (width * height);
+        //invMass = 1F / (width * height);
         
         prevX = x;
         prevY = y;

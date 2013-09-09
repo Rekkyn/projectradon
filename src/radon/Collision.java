@@ -32,8 +32,12 @@ public class Collision {
                     // Point towards B knowing that n points from A to B
                     if (B.x - A.x < 0) {
                         normal.set(-1, 0);
+                        B.onWall = 2;
+                        A.onWall = 1;
                     } else {
                         normal.set(1, 0);
+                        B.onWall = 1;
+                        A.onWall = 2;
                     }
                     penetration = xOverlap;
                 } else {
@@ -90,21 +94,31 @@ public class Collision {
         if (e.x - e.width / 2 < 0) {
             e.x = e.width / 2;
             e.velocity.x = -e.velocity.x * e.restitution / 2;
+            e.onWall = 1;
+        } else if (e.x - e.width / 2 == 0) {
+            e.onWall = 1;
+        } else
+        if (e.x + e.width / 2 > Game.width) {
+            e.x = Game.width - e.width / 2;
+            e.velocity.x = -e.velocity.x * e.restitution / 2;
+            e.onWall = 2;
+        } else if (e.x + e.width / 2 == Game.width) {
+            e.onWall = 2;
+        } else {
+            e.onWall = 0;
         }
         if (e.y - e.height / 2 < 0) {
             e.y = e.height / 2;
             e.velocity.y = -e.velocity.y * e.restitution / 2;
         }
-        if (e.x + e.width / 2 > Game.width) {
-            e.x = Game.width - e.width / 2;
-            e.velocity.x = -e.velocity.x * e.restitution / 2;
-        }
-        if (e.y + e.height / 2 > Game.height) {
+        if (e.y + e.height / 2 > Game.height && e.velocity.y > 0) {
             e.y = Game.height - e.height / 2;
             e.velocity.y = -e.velocity.y * e.restitution / 2;
             e.onGround = true;
+        }else if (e.y + e.height / 2 == Game.height) {
+            e.onGround = true;
         } else {
             e.onGround = false;
-        }
+        }        
     }
 }

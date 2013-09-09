@@ -8,8 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Player extends Entity {
     
     public float walkSpeed = 3.0F;
-    /** 0 = left, 1 = right */
-    public byte direction = 0;
+    public int walljumpColldown = 0;
     
     public Player(float x, float y) {
         super(x, y);
@@ -20,25 +19,41 @@ public class Player extends Entity {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
         velocity.y += 0.2;
-        
+                        
         input = container.getInput();
-        if (input.isKeyDown(Input.KEY_SPACE) && onGround) {
-            velocity.y = -6;
+        if (input.isKeyPressed(Input.KEY_SPACE)) {
+            if (onGround) {
+                velocity.y = -6;
+            } else if (onWall == 1) {
+                velocity.set(0, -6).setTheta(-60);
+                walljumpColldown = 13;
+            } else if (onWall == 2) {
+                velocity.set(0, -6).setTheta(-120);
+                walljumpColldown = 13;
+            }
         }
-        if (input.isKeyDown(Input.KEY_A)) {
+        
+        walljumpColldown--;
+        if (walljumpColldown < 0) walljumpColldown = 0;
+        
+        if (input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_D)) {
             if (onGround) {
                 velocity.x = -walkSpeed;
-            } else if (velocity.x > -2) {
+            } else if (velocity.x > -walkSpeed / 2.5F && walljumpColldown == 0) {
                 velocity.x = -walkSpeed / 2.5F;
             }
-            direction = 0;
-        } else if (input.isKeyDown(Input.KEY_D)) {
+            if (onWall == 1 && walljumpColldown == 0 && velocity.y > 0) {
+                velocity.y *= 0.9;
+            }
+        } else if (input.isKeyDown(Input.KEY_D) && !input.isKeyDown(Input.KEY_A)) {
             if (onGround) {
                 velocity.x = walkSpeed;
-            } else if (velocity.x < 2) {
+            } else if (velocity.x < walkSpeed / 2.5F && walljumpColldown == 0) {
                 velocity.x = walkSpeed / 2.5F;
             }
-            direction = 1;
+            if (onWall == 2 && walljumpColldown == 0 && velocity.y > 0) {
+                velocity.y *= 0.9;
+            }
         } else {
             if (onGround) {
                 velocity.x = 0;
