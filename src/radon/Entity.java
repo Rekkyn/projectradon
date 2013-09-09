@@ -24,9 +24,9 @@ public class Entity {
     public float width, height;
     public Color col;
     Random rand = new Random();
-    public boolean playerControlled;
     public float restitution = 0.8F;
-        
+    public boolean onGround;
+    
     public Entity(float x, float y) {
         this.x = x;
         this.y = y;
@@ -45,7 +45,7 @@ public class Entity {
         g.translate(World.partialTicks * velocity.x, World.partialTicks * velocity.y);
         g.fillRect(x - width / 2, y - height / 2, width, height);
         g.setColor(Color.black);
-        //g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
+        // g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
         g.popTransform();
     }
     
@@ -57,7 +57,7 @@ public class Entity {
         prevVelocity.set(velocity);
         
         invMass = 1F / (width * height);
-                                
+        
         prevX = x;
         prevY = y;
         
@@ -67,50 +67,26 @@ public class Entity {
         x += velocity.x;
         y += velocity.y;
         
-                
-        float speed = 100F;
-        
-        if (playerControlled) {
-            Vector2f inputV = new Vector2f();
-            
-            input = container.getInput();
-            if (input.isKeyDown(Input.KEY_UP)) {
-                inputV.add(new Vector2f(0, -1));
-            }
-            if (input.isKeyDown(Input.KEY_DOWN)) {
-                inputV.add(new Vector2f(0, 1));
-            }
-            if (input.isKeyDown(Input.KEY_LEFT)) {
-                inputV.add(new Vector2f(-1, 0));
-            }
-            if (input.isKeyDown(Input.KEY_RIGHT)) {
-                inputV.add(new Vector2f(1, 0));
-            }
-            
-            inputV.normalise();
-            inputV.scale(speed);
-            
-            force.add(inputV);
+        if (!(this instanceof Player)) {
+            velocity.scale(0.95F);
         }
-        
-        velocity.scale(0.95F);        
     }
-            
+    
     public void remove() {
         removed = true;
     }
-        
+    
     public boolean intersects(Entity e) {
         if (e.x - e.width / 2 > x + width / 2 || x - width / 2 > e.x + e.width / 2) return false;
         if (e.y - e.height / 2 > y + height / 2 || y - height / 2 > e.y + e.height / 2) return false;
         return true;
         
     }
-        
+    
     public boolean isCollidable() {
         return true;
     }
-
+    
     public void init() {}
     
 }

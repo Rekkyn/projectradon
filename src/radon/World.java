@@ -48,7 +48,7 @@ public class World extends BasicGameState {
                     Collision.doCollision(e, e2);
                 }
             }
-                        
+            
             e.update(container, game, delta);
             Collision.doEdgeCollision(e);
             
@@ -60,15 +60,14 @@ public class World extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        Entity e = new Entity(100, 100);
-        e.playerControlled = true;
-        add(e);
+        Player p = new Player(100, 100);
+        add(p);
         
         for (int i = 0; i < 10; i++) {
-            Entity lmnop = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
-            lmnop.width = rand.nextFloat() * 50;
-            lmnop.height = rand.nextFloat() * 50;
-            add(lmnop);
+            Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
+            e.width = rand.nextFloat() * 50;
+            e.height = rand.nextFloat() * 50;
+            add(e);
         }
     }
     
@@ -93,7 +92,6 @@ public class World extends BasicGameState {
     public static List<Entity> getEntities() {
         return entities;
     }
-
     
     @Override
     public int getID() {
