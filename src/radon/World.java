@@ -2,6 +2,7 @@ package radon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -18,6 +19,8 @@ public class World extends BasicGameState {
     public static final float timesetp = 50 / 3; // 1/60 second
     
     public static List<Entity> entities = new ArrayList<Entity>();
+    
+    public static Random rand = new Random();
     
     public World(int play) {}
     
@@ -38,8 +41,16 @@ public class World extends BasicGameState {
         
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
+            
+            for (int j = 0; j < entities.size(); j++) {
+                Entity e2 = entities.get(j);
+                if (e2 != e && e.intersects(e2) && e.isCollidable() && e2.isCollidable()) {
+                    Collision.doCollision(e, e2);
+                }
+            }
                         
             e.update(container, game, delta);
+            Collision.doEdgeCollision(e);
             
             if (e.removed) {
                 entities.remove(i--);
@@ -52,6 +63,13 @@ public class World extends BasicGameState {
         Entity e = new Entity(100, 100);
         e.playerControlled = true;
         add(e);
+        
+        for (int i = 0; i < 10; i++) {
+            Entity lmnop = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
+            lmnop.width = rand.nextFloat() * 50;
+            lmnop.height = rand.nextFloat() * 50;
+            add(lmnop);
+        }
     }
     
     @Override
