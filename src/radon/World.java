@@ -63,7 +63,7 @@ public class World extends BasicGameState {
         Player p = new Player(100, 100);
         add(p);
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
             e.width = rand.nextFloat() * 50;
             e.height = rand.nextFloat() * 50;

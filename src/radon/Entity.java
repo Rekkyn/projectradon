@@ -68,7 +68,7 @@ public class Entity {
         y += velocity.y;
         
         if (!(this instanceof Player)) {
-            velocity.scale(0.95F);
+            velocity.scale(0.8F);
         }
     }
     

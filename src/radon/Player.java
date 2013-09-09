@@ -23,7 +23,7 @@ public class Player extends Entity {
         
         input = container.getInput();
         if (input.isKeyDown(Input.KEY_SPACE) && onGround) {
-            velocity.y = -5;
+            velocity.y = -6;
         }
         if (input.isKeyDown(Input.KEY_A)) {
             if (onGround) {
