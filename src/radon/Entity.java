@@ -26,6 +26,7 @@ public class Entity {
     Random rand = new Random();
     public float restitution = 0.8F;
     public boolean onGround;
+    public boolean physics = false;
     /** 0 = not on wall, 1 = left wall, 2 = right wall */
     public byte onWall;
     
@@ -35,10 +36,27 @@ public class Entity {
         width = 20;
         height = 20;
         invMass = 1F / (width * height);
-        col = new Color(42, 47, 159);
+        //col = new Color(42, 47, 159);
+        col = new Color(255, 255, 0); // May have made it yellow :)
         velocity = new Vector2f(0, 0);
         prevVelocity = new Vector2f(0, 0);
         force = new Vector2f(0, 0);
+        //Old constructor
+    
+    }
+    
+    public Entity(float x, float y, Color colour, float width, float height, boolean physicsactive) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        invMass = 1F / (width * height);
+        this.col = colour;
+        this.velocity = new Vector2f(0, 0);
+        this.physics = physicsactive;
+        prevVelocity = new Vector2f(0, 0);
+        force = new Vector2f(0, 0);
+        
     }
     
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -58,8 +76,9 @@ public class Entity {
         
         prevVelocity.set(velocity);
         
-        //invMass = 1F / (width * height);
-        
+       if (physics == true){
+         invMass = 1F / (width * height);
+       }
         prevX = x;
         prevY = y;
         
@@ -69,7 +88,7 @@ public class Entity {
         x += velocity.x;
         y += velocity.y;
         
-        if (!(this instanceof Player)) {
+        if (!(this instanceof Player)) { //Might have broken this, we'll see. - JDOG
             velocity.scale(0.8F);
         }
     }
@@ -88,6 +107,11 @@ public class Entity {
     public boolean isCollidable() {
         return true;
     }
+    
+    public boolean isPhysicsActive() {
+    	return physics;
+    }
+    	
     
     public void init() {}
     
