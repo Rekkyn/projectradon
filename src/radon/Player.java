@@ -8,7 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Player extends Entity {
     
     public float walkSpeed = 3.0F;
-    public int walljumpColldown = 0;
+    public int walljumpCooldown = 0;
     
     public Player(float x, float y) {
         super(x, y);
@@ -26,32 +26,34 @@ public class Player extends Entity {
                 velocity.y = -6;
             } else if (onWall == 1) {
                 velocity.set(0, -6).setTheta(-60);
-                walljumpColldown = 13;
+                walljumpCooldown = 13;
             } else if (onWall == 2) {
                 velocity.set(0, -6).setTheta(-120);
-                walljumpColldown = 13;
+                walljumpCooldown = 13;
             }
         }
         
-        walljumpColldown--;
-        if (walljumpColldown < 0) walljumpColldown = 0;
+        walljumpCooldown--;
+        if (walljumpCooldown < 0) walljumpCooldown = 0;
         
         if (input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_D)) {
             if (onGround) {
                 velocity.x = -walkSpeed;
-            } else if (velocity.x > -walkSpeed / 2.5F && walljumpColldown == 0) {
+            } else if (velocity.x >= -walkSpeed / 2.5F && walljumpCooldown == 0) {
                 velocity.x = -walkSpeed / 2.5F;
             }
-            if (onWall == 1 && walljumpColldown == 0 && velocity.y > 0) {
+            if (onWall == 1 && walljumpCooldown == 0 && velocity.y > 0) {
+                velocity.x = 0;
                 velocity.y *= 0.9;
             }
         } else if (input.isKeyDown(Input.KEY_D) && !input.isKeyDown(Input.KEY_A)) {
             if (onGround) {
                 velocity.x = walkSpeed;
-            } else if (velocity.x < walkSpeed / 2.5F && walljumpColldown == 0) {
+            } else if (velocity.x <= walkSpeed / 2.5F && walljumpCooldown == 0) {
                 velocity.x = walkSpeed / 2.5F;
             }
-            if (onWall == 2 && walljumpColldown == 0 && velocity.y > 0) {
+            if (onWall == 2 && walljumpCooldown == 0 && velocity.y > 0) {
+                velocity.x = 0;
                 velocity.y *= 0.9;
             }
         } else {
