@@ -55,6 +55,8 @@ public class World extends BasicGameState {
             if (e.removed) {
                 entities.remove(i--);
             }
+            
+            Visibility.load(entities);
         }
     }
     
@@ -63,13 +65,13 @@ public class World extends BasicGameState {
         Player p = new Player(100, 100);
         add(p);
         
-        for (int i = 0; i < 100; i++) {
+        //for (int i = 0; i < 100; i++) {
             Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
             e.width = rand.nextFloat() * 50 + 5;
             e.height = rand.nextFloat() * 50 + 5;
             e.invMass = 0;
             add(e);
-        }
+        //}
     }
     
     @Override
@@ -81,6 +83,11 @@ public class World extends BasicGameState {
             Entity e = entities.get(i);
             
             e.render(container, game, g);
+        }
+        
+        for (Segment s : Visibility.segments) {
+            g.setColor(new Color(0, 0, 0));
+            g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
         }
     }
     
