@@ -29,7 +29,9 @@ public class World extends BasicGameState {
         accumulator += delta;
         
         while (accumulator >= timesetp) {
-            tick(container, game, delta);
+            if (container.hasFocus()) {
+                tick(container, game, delta);
+            }
             accumulator -= timesetp;
         }
         
@@ -68,37 +70,29 @@ public class World extends BasicGameState {
         boolean controllable = false;
         for (int i = 0; i < 75; i++) {
             
-        	boolean physics = false;
-        	GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B, rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
-       
-            e.invMass = 0;
-            add(e);
-        }
-   
-    
-        	for (int i = 0; i < 25; i++) {
+            boolean physics = false;
+            GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
+                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
             
-        	boolean physics = true;
-        	GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B, rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
-       
             e.invMass = 0;
             add(e);
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
+        for (int i = 0; i < 25; i++) {
+            
+            boolean physics = true;
+            GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
+                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
+            
+            e.invMass = 0;
+            add(e);
+        }
+        
     }
     
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setColor(new Color(255,255,255));
+        g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, Game.width, Game.height);
         
         for (int i = 0; i < entities.size(); i++) {
