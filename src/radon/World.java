@@ -96,13 +96,18 @@ public class World extends BasicGameState {
         
         for (Segment s : Visibility.segments) {
             g.setColor(new Color(200, 200, 200));
-            g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
+            //g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
         }
         
         for (int i = 0; i < Visibility.output.size(); i += 2) {
             Vector2f p1 = Visibility.output.get(i);
             Vector2f p2 = Visibility.output.get(i + 1);
+            Vector2f p3 = new Vector2f(Visibility.output.get(Visibility.output.size() - 1).x, Visibility.output.get(Visibility.output.size() - 1).y);
+            if (i > 0) {
+            p3 = Visibility.output.get(i - 1);
+            }
             g.setColor(new Color(0, 0, 0));
+            g.drawLine(p3.x, p3.y, p1.x, p1.y);
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
         
