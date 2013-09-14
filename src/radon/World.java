@@ -69,13 +69,18 @@ public class World extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         add(p);
         
-        // for (int i = 0; i < 100; i++) {
-        Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
-        e.width = rand.nextFloat() * 50 + 5;
-        e.height = rand.nextFloat() * 50 + 5;
-        e.invMass = 0;
-        add(e);
-        // }
+        while (entities.size() < 100) {
+            Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
+            e.width = rand.nextFloat() * 50 + 5;
+            e.height = rand.nextFloat() * 50 + 5;
+            e.invMass = 0;
+            e.col = new Color(255, 255, 255);
+            boolean add = true;
+            for (Entity LOL : entities) {
+                if (e.intersects(LOL)) add = false;
+            }
+            if (add) add(e);
+        }
     }
     
     @Override
@@ -90,14 +95,17 @@ public class World extends BasicGameState {
         }
         
         for (Segment s : Visibility.segments) {
-            g.setColor(new Color(0, 0, 0));
+            g.setColor(new Color(200, 200, 200));
             g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
         }
-        if (!Visibility.output.isEmpty()) {
-            for (Vector2f v : Visibility.output) {
-                g.drawLine(p.x, p.y, v.x, v.y);
-            }
+        
+        for (int i = 0; i < Visibility.output.size(); i += 2) {
+            Vector2f p1 = Visibility.output.get(i);
+            Vector2f p2 = Visibility.output.get(i + 1);
+            g.setColor(new Color(0, 0, 0));
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
+        
     }
     
     public static void add(Entity entity) {
