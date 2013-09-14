@@ -3,19 +3,31 @@ package radon;
 public class Segment {
     
     EndPoint p1, p2;
+    public float distance;
     
-    public Segment() {
-    }
+    public Segment() {}
     
-    public class EndPoint {
+    public class EndPoint implements Comparable<EndPoint> {
         
         float x, y;
-        Segment s;
+        Segment segment;
+        public float angle;
+        public boolean begin;
         
-        public EndPoint(float x, float y, Segment s) {
+        public EndPoint(float x, float y, Segment segment) {
             this.x = x;
             this.y = y;
-            this.s = s;
+            this.segment = segment;
+        }
+        
+        @Override
+        public int compareTo(EndPoint o) {
+            if (angle > o.angle) return 1;
+            if (angle < o.angle) return -1;
+            // But for ties (common), we want Begin nodes before End nodes
+            if (!begin && o.begin) return 1;
+            if (begin && !o.begin) return -1;
+            return 0;
         }
     }
     

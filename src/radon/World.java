@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -21,6 +22,8 @@ public class World extends BasicGameState {
     public static List<Entity> entities = new ArrayList<Entity>();
     
     public static Random rand = new Random();
+    
+    Player p = new Player(100, 100);
     
     public World(int play) {}
     
@@ -56,22 +59,23 @@ public class World extends BasicGameState {
                 entities.remove(i--);
             }
             
-            Visibility.load(entities);
         }
+        Visibility.load(entities);
+        Visibility.setLightLocation(p.x, p.y);
+        Visibility.sweep();
     }
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        Player p = new Player(100, 100);
         add(p);
         
-        //for (int i = 0; i < 100; i++) {
-            Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
-            e.width = rand.nextFloat() * 50 + 5;
-            e.height = rand.nextFloat() * 50 + 5;
-            e.invMass = 0;
-            add(e);
-        //}
+        // for (int i = 0; i < 100; i++) {
+        Entity e = new Entity(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height);
+        e.width = rand.nextFloat() * 50 + 5;
+        e.height = rand.nextFloat() * 50 + 5;
+        e.invMass = 0;
+        add(e);
+        // }
     }
     
     @Override
@@ -88,6 +92,11 @@ public class World extends BasicGameState {
         for (Segment s : Visibility.segments) {
             g.setColor(new Color(0, 0, 0));
             g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
+        }
+        if (!Visibility.output.isEmpty()) {
+            for (Vector2f v : Visibility.output) {
+                g.drawLine(p.x, p.y, v.x, v.y);
+            }
         }
     }
     
