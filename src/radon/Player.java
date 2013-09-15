@@ -6,6 +6,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.guns.Gun;
+import radon.guns.Pistol;
+
 public class Player extends GenericCuboid {
     
     public float walkSpeed = 3.0F;
@@ -15,7 +18,10 @@ public class Player extends GenericCuboid {
     public static int B = 159;
     public static float width = 15;
     public static float height = 15;
-    public static byte selectedSlot = 2;
+    private Pistol pistol = new Pistol(this);
+    public Gun selectedGun = pistol;
+    public int fireDelay = selectedGun.autoFireRate;
+    public boolean shotToBeFired = false;
     
     public Player(int x, int y) {
         super(x, y, R, G, B, width, height, true);
@@ -26,7 +32,7 @@ public class Player extends GenericCuboid {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
-                
+        
         input = container.getInput();
         if (input.isKeyPressed(Input.KEY_SPACE)) {
             if (onGround) {
@@ -69,47 +75,52 @@ public class Player extends GenericCuboid {
             }
         }
         
-        if (input.isKeyPressed(Input.KEY_2)) selectedSlot = 2;
-        if (input.isKeyPressed(Input.KEY_3)) selectedSlot = 3;
+        if (input.isKeyPressed(Input.KEY_2)) selectedGun = pistol;
+        // if (input.isKeyPressed(Input.KEY_3)) selectedSlot = 3;
         
-        if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            float dx = input.getMouseX() - x;
-            float dy = input.getMouseY() - y;
-            float angle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
-            
-            if (selectedSlot == 2) firePistol(angle);
-            if (selectedSlot == 3) fireShotgun(angle);
+        float dx = input.getMouseX() - x;
+        float dy = input.getMouseY() - y;
+        float angle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
+        
+        if (shotToBeFired && fireDelay >= selectedGun.manualFireRate) {
+            selectedGun.fireManual(angle, fireDelay);
+            fireDelay = 0;
+            shotToBeFired = false;
         }
         
-    }
-
-    private void firePistol(float angle) {
-        float bulletforce = 20;
-        Bullet b = new Bullet(x, y);
-        b.velocity.set(velocity);
-        b.force.add(new Vector2f(bulletforce, 0));
-        b.force.setTheta(angle);
-        Vector2f v = new Vector2f(bulletforce, 0);
-        v.setTheta(180+angle);
-        force.add(v);
+        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate) {
+            selectedGun.fireAuto(angle);
+            fireDelay = 0;
+            shotToBeFired = false;
+        }
         
-        World.add(b);
+        if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fireDelay != 0) {
+            if (fireDelay >= selectedGun.autoFireRate) {
+                selectedGun.fireManual(angle, fireDelay);
+                fireDelay = 0;
+            } else {
+                shotToBeFired = true;
+            }
+        }
+        
+        fireDelay++;
+        
     }
     
     private void fireShotgun(float angle) {
-        float bulletforce = 10;
+        float bulletforce = 15;
         for (int i = 0; i < 5; i++) {
             float angleSpread = angle + (rand.nextFloat() * 2 - 1) * 10;
-        Bullet b = new Bullet(x, y);
-        b.velocity.set(velocity);
-        b.force.add(new Vector2f(bulletforce, 0));
-        b.force.setTheta(angleSpread);
-        Vector2f v = new Vector2f(bulletforce, 0);
-        v.setTheta(180+angleSpread);
-        force.add(v);
-        
-        World.add(b);
+            Bullet b = new Bullet(x, y);
+            b.velocity.set(velocity);
+            b.force.add(new Vector2f(bulletforce, 0));
+            b.force.setTheta(angleSpread);
+            Vector2f v = new Vector2f(bulletforce, 0);
+            v.setTheta(180 + angleSpread);
+            force.add(v);
+            
+            World.add(b);
         }
     }
-
+    
 }

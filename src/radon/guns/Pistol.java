@@ -1,0 +1,28 @@
+package radon.guns;
+
+import radon.Player;
+
+public class Pistol extends Gun {
+    
+    public static final int autoFireRate = 20;
+    public static final int manualFireRate = 7;
+    public static final float bulletForce = 20;
+    
+    public Pistol(Player p) {
+        super(p, autoFireRate, manualFireRate);
+    }
+    
+    @Override
+    public void fireAuto(float angle) {
+        fireBullet(angle + (rand.nextFloat() * 2 - 1) * 3, bulletForce);
+    }
+    
+    @Override
+    public void fireManual(float angle, int fireDelay) {
+        float bulletSpread = 8 - 8 / autoFireRate * fireDelay; // 8 is the max
+                                                               // spread at
+                                                               // minimum delay
+        fireBullet(angle + (rand.nextFloat() * 2 - 1) * bulletSpread, bulletForce);
+    }
+    
+}

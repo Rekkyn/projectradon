@@ -7,6 +7,7 @@ import java.util.Random;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -26,6 +27,9 @@ public class World extends BasicGameState {
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+        Input input = container.getInput();
+        if (input.isKeyPressed(Input.KEY_ESCAPE)) Game.appgc.setFullscreen(false);
+        
         accumulator += delta;
         
         while (accumulator >= timesetp) {
