@@ -3,6 +3,7 @@ package radon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Player extends GenericCuboid {
@@ -18,14 +19,13 @@ public class Player extends GenericCuboid {
     public Player(int x, int y) {
         super(x, y, R, G, B, width, height, true);
         restitution = 0.0F;
+        gravity = true;
     }
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
-        
-        velocity.y += 0.2;
-        
+                
         input = container.getInput();
         if (input.isKeyPressed(Input.KEY_SPACE)) {
             if (onGround) {
@@ -68,5 +68,26 @@ public class Player extends GenericCuboid {
             }
         }
         
+        if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            float dx = input.getMouseX() - x;
+            float dy = input.getMouseY() - y;
+            float angle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
+            
+            fireBullet(angle);
+        }
+        
+    }
+
+    private void fireBullet(float angle) {
+        float bulletforce = 10;
+        Bullet b = new Bullet(x, y);
+        b.velocity.set(velocity);
+        b.force.add(new Vector2f(bulletforce, 0));
+        b.force.setTheta(angle);
+        Vector2f v = new Vector2f(bulletforce, 0);
+        v.setTheta(180+angle);
+        force.add(v);
+        
+        World.add(b);
     }
 }
