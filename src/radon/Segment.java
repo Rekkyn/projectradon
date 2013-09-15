@@ -1,11 +1,16 @@
 package radon;
 
+import org.newdawn.slick.Color;
+
 public class Segment {
     
     EndPoint p1, p2;
     public float distance;
+    public Color col;
     
-    public Segment() {}
+    public Segment(Color col) {
+        this.col = col;
+    }
     
     public class EndPoint implements Comparable<EndPoint> {
         

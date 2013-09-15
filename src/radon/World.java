@@ -74,7 +74,7 @@ public class World extends BasicGameState {
             e.width = rand.nextFloat() * 50 + 5;
             e.height = rand.nextFloat() * 50 + 5;
             e.invMass = 0;
-            e.col = new Color(255, 255, 255);
+            e.col = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
             boolean add = true;
             for (Entity LOL : entities) {
                 if (e.intersects(LOL)) add = false;
@@ -91,23 +91,27 @@ public class World extends BasicGameState {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             
-            e.render(container, game, g);
+            if (e instanceof Player) e.render(container, game, g);
         }
         
         for (Segment s : Visibility.segments) {
             g.setColor(new Color(200, 200, 200));
-            //g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
+            // g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
         }
         
         for (int i = 0; i < Visibility.output.size(); i += 2) {
             Vector2f p1 = Visibility.output.get(i);
             Vector2f p2 = Visibility.output.get(i + 1);
-            Vector2f p3 = new Vector2f(Visibility.output.get(Visibility.output.size() - 1).x, Visibility.output.get(Visibility.output.size() - 1).y);
+            Vector2f p3 = new Vector2f(Visibility.output.get(Visibility.output.size() - 1).x, Visibility.output.get(Visibility.output
+                    .size() - 1).y);
             if (i > 0) {
-            p3 = Visibility.output.get(i - 1);
+                p3 = Visibility.output.get(i - 1);
             }
             g.setColor(new Color(0, 0, 0));
+            g.setLineWidth(1);
             g.drawLine(p3.x, p3.y, p1.x, p1.y);
+            g.setColor(Visibility.outputColours.get(i / 2));
+            g.setLineWidth(2);
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
         

@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
 import radon.Segment.EndPoint;
@@ -35,6 +36,7 @@ public class Visibility {
     public static List<Segment> open = new ArrayList<Segment>();
     public static Vector2f light = new Vector2f();
     public static List<Vector2f> output = new ArrayList<Vector2f>();
+    public static List<Color> outputColours = new ArrayList<Color>();
     
     public static void load(List<Entity> entities) {
         segments.clear();
@@ -42,21 +44,22 @@ public class Visibility {
         
         for (Entity e : entities) {
             if (!(e instanceof Player)) {
-                addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y - e.height / 2); // top
-                addSegment(e.x + e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y + e.height / 2); // right
-                addSegment(e.x - e.width / 2, e.y + e.height / 2, e.x + e.width / 2, e.y + e.height / 2); // bottom
-                addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x - e.width / 2, e.y + e.height / 2); // left
+                Color col = e.col;
+                addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y - e.height / 2, col); // top
+                addSegment(e.x + e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y + e.height / 2, col); // right
+                addSegment(e.x - e.width / 2, e.y + e.height / 2, e.x + e.width / 2, e.y + e.height / 2, col); // bottom
+                addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x - e.width / 2, e.y + e.height / 2, col); // left
             }
         }
         
-        addSegment(0, 0, Game.width, 0); // top
-        addSegment(Game.width, 0, Game.width, Game.height); // right
-        addSegment(0, Game.height, Game.width, Game.height); // bottom
-        addSegment(0, 0, 0, Game.height); // left
+        addSegment(0, 0, Game.width, 0, new Color(0, 0, 0)); // top
+        addSegment(Game.width, 0, Game.width, Game.height, new Color(0, 0, 0)); // right
+        addSegment(0, Game.height, Game.width, Game.height, new Color(0, 0, 0)); // bottom
+        addSegment(0, 0, 0, Game.height, new Color(0, 0, 0)); // left
     }
     
-    public static void addSegment(float x1, float y1, float x2, float y2) {
-        Segment s = new Segment();
+    public static void addSegment(float x1, float y1, float x2, float y2, Color col) {
+        Segment s = new Segment(col);
         EndPoint p1 = s.new EndPoint(x1, y1, s);
         EndPoint p2 = s.new EndPoint(x2, y2, s);
         s.p1 = p1;
@@ -102,6 +105,7 @@ public class Visibility {
     public static void sweep() {
         float maxAngle = 999.0F;
         output.clear();
+        outputColours.clear();
         Collections.sort(endpoints);
         
         open.clear();
@@ -241,6 +245,7 @@ public class Visibility {
             output.add(0, pBegin);
         }
         output.add(0, pEnd);
+        outputColours.add(0, segment.col);
     }
     
     public static Vector2f lineIntersection(Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4) {
