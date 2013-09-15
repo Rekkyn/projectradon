@@ -15,6 +15,7 @@ public class Player extends GenericCuboid {
     public static int B = 159;
     public static float width = 15;
     public static float height = 15;
+    public static byte selectedSlot = 2;
     
     public Player(int x, int y) {
         super(x, y, R, G, B, width, height, true);
@@ -68,18 +69,22 @@ public class Player extends GenericCuboid {
             }
         }
         
+        if (input.isKeyPressed(Input.KEY_2)) selectedSlot = 2;
+        if (input.isKeyPressed(Input.KEY_3)) selectedSlot = 3;
+        
         if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
             float dx = input.getMouseX() - x;
             float dy = input.getMouseY() - y;
             float angle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
             
-            fireBullet(angle);
+            if (selectedSlot == 2) firePistol(angle);
+            if (selectedSlot == 3) fireShotgun(angle);
         }
         
     }
 
-    private void fireBullet(float angle) {
-        float bulletforce = 10;
+    private void firePistol(float angle) {
+        float bulletforce = 20;
         Bullet b = new Bullet(x, y);
         b.velocity.set(velocity);
         b.force.add(new Vector2f(bulletforce, 0));
@@ -90,4 +95,21 @@ public class Player extends GenericCuboid {
         
         World.add(b);
     }
+    
+    private void fireShotgun(float angle) {
+        float bulletforce = 10;
+        for (int i = 0; i < 5; i++) {
+            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * 10;
+        Bullet b = new Bullet(x, y);
+        b.velocity.set(velocity);
+        b.force.add(new Vector2f(bulletforce, 0));
+        b.force.setTheta(angleSpread);
+        Vector2f v = new Vector2f(bulletforce, 0);
+        v.setTheta(180+angleSpread);
+        force.add(v);
+        
+        World.add(b);
+        }
+    }
+
 }
