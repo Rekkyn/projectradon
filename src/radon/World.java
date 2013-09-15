@@ -67,12 +67,11 @@ public class World extends BasicGameState {
         int R = 42;
         int G = 47;
         int B = 159;
-        boolean controllable = false;
         for (int i = 0; i < 75; i++) {
             
             boolean physics = false;
             GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
-                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
+                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics);
             
             e.invMass = 0;
             add(e);
@@ -82,7 +81,7 @@ public class World extends BasicGameState {
             
             boolean physics = true;
             GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
-                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics, controllable);
+                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics);
             
             e.invMass = 0;
             add(e);
