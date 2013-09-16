@@ -18,7 +18,7 @@ public class ForcefulNature extends Gun {
     @Override
     public void fireManual(float angle, int fireDelay) {
         for (int i = 0; i < 5; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * 10;
+            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * ((2) * ((p.velocity.length())) + 5);
             fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
         }
     }
