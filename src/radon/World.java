@@ -16,7 +16,7 @@ public class World extends BasicGameState {
     
     float accumulator = 0.0F;
     public static long tickCount = 0;
-    static float partialTicks;
+    public static float partialTicks;
     public static final float timesetp = 50 / 3; // 1/60 second
     
     public static List<Entity> entities = new ArrayList<Entity>();

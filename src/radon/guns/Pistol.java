@@ -14,7 +14,7 @@ public class Pistol extends Gun {
     
     @Override
     public void fireAuto(float angle) {
-        fireBullet(angle + (rand.nextFloat() * 2 - 1) * 3, bulletForce);
+        fireBullet(angle + (rand.nextFloat() * 2 - 1) * 3, bulletForce, BulletType.NORMAL);
     }
     
     @Override
@@ -22,7 +22,7 @@ public class Pistol extends Gun {
         float bulletSpread = 8 - 8 / autoFireRate * fireDelay; // 8 is the max
                                                                // spread at
                                                                // minimum delay
-        fireBullet(angle + (rand.nextFloat() * 2 - 1) * bulletSpread, bulletForce);
+        fireBullet(angle + (rand.nextFloat() * 2 - 1) * bulletSpread, bulletForce, BulletType.NORMAL);
     }
     
 }

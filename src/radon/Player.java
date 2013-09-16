@@ -5,6 +5,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.guns.ForcefulNature;
 import radon.guns.Gun;
 import radon.guns.Pistol;
 import radon.guns.Shotgun;
@@ -20,6 +21,7 @@ public class Player extends GenericCuboid {
     public static float height = 15;
     private Pistol pistol = new Pistol(this);
     private Shotgun shotgun = new Shotgun(this);
+    private ForcefulNature fan = new ForcefulNature(this);
     public Gun selectedGun = pistol;
     public int fireDelay = selectedGun.autoFireRate;
     public boolean shotToBeFired = false;
@@ -78,6 +80,7 @@ public class Player extends GenericCuboid {
         
         if (input.isKeyPressed(Input.KEY_2)) selectedGun = pistol;
         if (input.isKeyPressed(Input.KEY_3)) selectedGun = shotgun;
+        if (input.isKeyPressed(Input.KEY_0)) selectedGun = fan;
         
         float dx = input.getMouseX() - x;
         float dy = input.getMouseY() - y;

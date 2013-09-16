@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import radon.Bullet;
 import radon.Player;
 import radon.World;
 
@@ -17,6 +16,8 @@ public abstract class Gun {
     public int autoFireRate;
     public int manualFireRate;
     
+    public enum BulletType {NORMAL, HEAVY}
+    
     public Gun(Player p, int autoFireRate, int manualFireRate) {
         this.p = p;
         this.autoFireRate = autoFireRate;
@@ -27,8 +28,16 @@ public abstract class Gun {
     
     public abstract void fireManual(float angle, int fireDelay);
     
-    public void fireBullet(float angle, float force) {
-        Bullet b = new Bullet(p.x, p.y);
+    public void fireBullet(float angle, float force, BulletType type) {
+        Bullet b;
+        switch (type) {
+        case HEAVY:
+            b = new HeavyBullet(p.x, p.y);
+            break;
+        
+        default:
+            b = new Bullet(p.x, p.y);
+        }
         b.velocity.set(p.velocity); // should bullets be fired with relative
                                     // speed to the player?
         b.force.add(new Vector2f(force, 0));
