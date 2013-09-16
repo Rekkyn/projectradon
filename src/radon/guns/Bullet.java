@@ -19,7 +19,7 @@ public class Bullet extends Entity {
         gravity = true;
         col = new Color(50, 50, 50);
     }
-        
+    
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();

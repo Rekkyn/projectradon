@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import radon.World;
 
 public class HeavyBullet extends Bullet {
-
+    
     public HeavyBullet(float x, float y) {
         super(x, y);
         invMass = 0.05F;

@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GenericCuboid extends Entity {
-        
+    
     public GenericCuboid(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean physicsactive) {
         super(x, y, width, height);
         col = new Color(colourR, colourG, colourB);

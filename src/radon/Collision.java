@@ -97,8 +97,7 @@ public class Collision {
             e.onWall = 1;
         } else if (e.x - e.width / 2 == 0) {
             e.onWall = 1;
-        } else
-        if (e.x + e.width / 2 > Game.width) {
+        } else if (e.x + e.width / 2 > Game.width) {
             e.x = Game.width - e.width / 2;
             e.velocity.x = -e.velocity.x * e.restitution / 2;
             e.onWall = 2;
@@ -115,10 +114,10 @@ public class Collision {
             e.y = Game.height - e.height / 2;
             e.velocity.y = -e.velocity.y * e.restitution / 2;
             e.onGround = true;
-        }else if (e.y + e.height / 2 == Game.height) {
+        } else if (e.y + e.height / 2 == Game.height) {
             e.onGround = true;
         } else {
             e.onGround = false;
-        }        
+        }
     }
 }

@@ -16,7 +16,9 @@ public abstract class Gun {
     public int autoFireRate;
     public int manualFireRate;
     
-    public enum BulletType {NORMAL, HEAVY}
+    public enum BulletType {
+        NORMAL, HEAVY
+    }
     
     public Gun(Player p, int autoFireRate, int manualFireRate) {
         this.p = p;

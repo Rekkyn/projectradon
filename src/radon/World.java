@@ -12,7 +12,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class World extends BasicGameState {
     
     float accumulator = 0.0F;
@@ -23,30 +22,20 @@ public class World extends BasicGameState {
     public static List<Entity> entities = new ArrayList<Entity>();
     
     public static Random rand = new Random();
-   
+    
     public World(int play) {}
-    
-    
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
         
-        if (input.isKeyPressed(Input.KEY_F11)){
-        	
-        	Game.width = Game.scnwidth;
-            Game.height = Game.scnheight;
-        	
-        	Game.appgc.setFullscreen(true);
+        if (input.isKeyPressed(Input.KEY_F11)) {
+            Game.appgc.setFullscreen(true);
         }
-        if ((input.isKeyPressed(Input.KEY_ESCAPE)) && (Game.appgc.isFullscreen() == true)){
-        	Game.appgc.setFullscreen(false);
-        	
-        	Game.width = Game.scnwidth - 50;
-            Game.height = Game.scnheight - 50;
-        	
+        if (input.isKeyPressed(Input.KEY_ESCAPE) && Game.appgc.isFullscreen()) {
+            Game.appgc.setFullscreen(false);
         }
-         
+        
         accumulator += delta;
         
         while (accumulator >= timesetp) {
@@ -83,8 +72,7 @@ public class World extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-    	 Game.appgc.setFullscreen(false);
-    	Player p = new Player(100, 100);
+        Player p = new Player(100, 100);
         add(p);
         int R = 42;
         int G = 47;

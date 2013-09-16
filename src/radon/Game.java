@@ -11,8 +11,6 @@ public class Game extends StateBasedGame {
     public static final String NAME = "Project Radon";
     public static final int WORLD = 0;
     public static int width = 800;
-    public static int scnwidth = 666;
-    public static int scnheight = 42;
     public static int height = 600;
     
     public Game(String name) {
@@ -20,15 +18,12 @@ public class Game extends StateBasedGame {
     }
     
     public static void main(String[] args) {
-    	
-    	
-    	try {
+        
+        try {
             appgc = new AppGameContainer(new Game(NAME));
-            scnwidth = appgc.getScreenWidth();
-        	scnheight = appgc.getScreenHeight();
-            width = scnwidth - 50;
-            height = scnheight - 50;
-            appgc.setDisplayMode(width, height, false);
+            width = appgc.getScreenWidth();
+            height = appgc.getScreenHeight();
+            appgc.setDisplayMode(width, height, true);
             appgc.start();
         } catch (SlickException e) {
             e.printStackTrace();
