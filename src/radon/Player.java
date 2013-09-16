@@ -3,11 +3,11 @@ package radon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import radon.guns.Gun;
 import radon.guns.Pistol;
+import radon.guns.Shotgun;
 
 public class Player extends GenericCuboid {
     
@@ -19,6 +19,7 @@ public class Player extends GenericCuboid {
     public static float width = 15;
     public static float height = 15;
     private Pistol pistol = new Pistol(this);
+    private Shotgun shotgun = new Shotgun(this);
     public Gun selectedGun = pistol;
     public int fireDelay = selectedGun.autoFireRate;
     public boolean shotToBeFired = false;
@@ -76,7 +77,7 @@ public class Player extends GenericCuboid {
         }
         
         if (input.isKeyPressed(Input.KEY_2)) selectedGun = pistol;
-        // if (input.isKeyPressed(Input.KEY_3)) selectedSlot = 3;
+        if (input.isKeyPressed(Input.KEY_3)) selectedGun = shotgun;
         
         float dx = input.getMouseX() - x;
         float dy = input.getMouseY() - y;
@@ -88,39 +89,23 @@ public class Player extends GenericCuboid {
             shotToBeFired = false;
         }
         
-        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate) {
+        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate && selectedGun.autoFireRate != 0) {
             selectedGun.fireAuto(angle);
             fireDelay = 0;
             shotToBeFired = false;
         }
         
         if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fireDelay != 0) {
-            if (fireDelay >= selectedGun.autoFireRate) {
+            if (fireDelay >= selectedGun.manualFireRate) {
                 selectedGun.fireManual(angle, fireDelay);
                 fireDelay = 0;
-            } else {
+            } else if (selectedGun.autoFireRate != 0) {
                 shotToBeFired = true;
             }
         }
         
         fireDelay++;
         
-    }
-    
-    private void fireShotgun(float angle) {
-        float bulletforce = 15;
-        for (int i = 0; i < 5; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * 10;
-            Bullet b = new Bullet(x, y);
-            b.velocity.set(velocity);
-            b.force.add(new Vector2f(bulletforce, 0));
-            b.force.setTheta(angleSpread);
-            Vector2f v = new Vector2f(bulletforce, 0);
-            v.setTheta(180 + angleSpread);
-            force.add(v);
-            
-            World.add(b);
-        }
     }
     
 }
