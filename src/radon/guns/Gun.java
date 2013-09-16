@@ -2,7 +2,6 @@ package radon.guns;
 
 import java.util.Random;
 
-
 import org.newdawn.slick.geom.Vector2f;
 
 import radon.Player;
@@ -18,7 +17,7 @@ public abstract class Gun {
     public int manualFireRate;
     
     public enum BulletType {
-        NORMAL, HEAVY, ROCKET
+        NORMAL, HEAVY
     }
     
     public Gun(Player p, int autoFireRate, int manualFireRate) {
@@ -37,22 +36,12 @@ public abstract class Gun {
         case HEAVY:
             b = new HeavyBullet(p);
             break;
-        case ROCKET:
-            b = new RocketBullet(p.x, p.y);
-            break;
         
         default:
             b = new Bullet(p);
         }
-        
-       // if (b instanceof RocketBullet) {
-        	
-        	//b.velocity.set(1.5F, (float) p.velocity.getTheta());
-        	
-       // } else {
         b.velocity.set(p.velocity); // should bullets be fired with relative
                                     // speed to the player?
-      //  }
         b.force.add(new Vector2f(force, 0));
         b.force.setTheta(angle);
         Vector2f v = new Vector2f(force, 0);

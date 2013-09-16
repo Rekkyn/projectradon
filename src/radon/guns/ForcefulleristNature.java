@@ -1,19 +1,29 @@
 package radon.guns;
 
 import radon.Player;
+import radon.guns.Gun.BulletType;
 
-public class ForcefulNature extends Gun {
+public class ForcefulleristNature extends Gun {
     
-    public static final int autoFireRate = 0;
+    public static final int autoFireRate = 1;
     public static final int manualFireRate = 45;
     public static final float bulletForce = 200;
     
-    public ForcefulNature(Player p) {
+    public ForcefulleristNature(Player p) {
         super(p, autoFireRate, manualFireRate);
     }
     
     @Override
-    public void fireAuto(float angle) {}
+    
+    	public void fireAuto(float angle) {
+        	for (int i = 0; i < 5; i++) {
+                float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * p.velocity.length() + 5);
+                
+                fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
+        	}
+    	
+    	
+    }
     
     @Override
     public void fireManual(float angle, int fireDelay) {
