@@ -22,7 +22,11 @@ public class Pistol extends Gun {
         float bulletSpread = 8 - 8 / autoFireRate * fireDelay; // 8 is the max
                                                                // spread at
                                                                // minimum delay
+
         fireBullet(angle + (rand.nextFloat() * 2 - 1) * bulletSpread, bulletForce, BulletType.NORMAL);
+
+       
+
     }
     
 }

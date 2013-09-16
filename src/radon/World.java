@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+
 public class World extends BasicGameState {
     
     float accumulator = 0.0F;
@@ -22,14 +23,30 @@ public class World extends BasicGameState {
     public static List<Entity> entities = new ArrayList<Entity>();
     
     public static Random rand = new Random();
-    
+   
     public World(int play) {}
+    
+    
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
-        if (input.isKeyPressed(Input.KEY_ESCAPE)) Game.appgc.setFullscreen(false);
         
+        if (input.isKeyPressed(Input.KEY_F11)){
+        	
+        	Game.width = Game.scnwidth;
+            Game.height = Game.scnheight;
+        	
+        	Game.appgc.setFullscreen(true);
+        }
+        if ((input.isKeyPressed(Input.KEY_ESCAPE)) && (Game.appgc.isFullscreen() == true)){
+        	Game.appgc.setFullscreen(false);
+        	
+        	Game.width = Game.scnwidth - 50;
+            Game.height = Game.scnheight - 50;
+        	
+        }
+         
         accumulator += delta;
         
         while (accumulator >= timesetp) {
@@ -66,12 +83,13 @@ public class World extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        Player p = new Player(100, 100);
+    	 Game.appgc.setFullscreen(false);
+    	Player p = new Player(100, 100);
         add(p);
         int R = 42;
         int G = 47;
         int B = 159;
-        for (int i = 0; i < 75; i++) {
+        for (int i = 0; i < 150; i++) {
             
             boolean physics = false;
             GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
@@ -81,7 +99,7 @@ public class World extends BasicGameState {
             add(e);
         }
         
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 50; i++) {
             
             boolean physics = true;
             GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
