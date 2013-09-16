@@ -7,7 +7,7 @@ public class Shotgun extends Gun {
     
     public static final int autoFireRate = 0;
     public static final int manualFireRate = 45;
-    public static final float bulletForce = 35;
+    public static final float bulletForce = 320;
     
     public Shotgun(Player p) {
         super(p, autoFireRate, manualFireRate);
