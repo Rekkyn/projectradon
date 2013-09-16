@@ -7,13 +7,17 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import radon.Entity;
+import radon.Player;
 import radon.World;
 
 public class Bullet extends Entity {
     public int ticksOnGround = 0;
+    public boolean hit = false;
+    public Player p;
     
-    public Bullet(float x, float y) {
-        super(x, y);
+    public Bullet(Player p) {
+        super(p.x, p.y);
+        this.p = p;
         invMass = 0.99F;
         restitution = 0.1F;
         gravity = true;
@@ -36,6 +40,13 @@ public class Bullet extends Entity {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
+        
+        if (!hit) {
+            velocity.scale(0.98F);
+        } else {
+            velocity.scale(0.95F);
+        }
+        
         if (onGround) {
             velocity.x *= 0.9;
             ticksOnGround++;
@@ -45,6 +56,11 @@ public class Bullet extends Entity {
             col.a = 1F - (ticksOnGround - 60F) / 60F;
         }
         if (ticksOnGround > 120) remove();
+    }
+    
+    @Override
+    public void onHit() {
+        hit = true;
     }
     
 }

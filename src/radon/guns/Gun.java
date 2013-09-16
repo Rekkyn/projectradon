@@ -34,11 +34,11 @@ public abstract class Gun {
         Bullet b;
         switch (type) {
         case HEAVY:
-            b = new HeavyBullet(p.x, p.y);
+            b = new HeavyBullet(p);
             break;
         
         default:
-            b = new Bullet(p.x, p.y);
+            b = new Bullet(p);
         }
         b.velocity.set(p.velocity); // should bullets be fired with relative
                                     // speed to the player?

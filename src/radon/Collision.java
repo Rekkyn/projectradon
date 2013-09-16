@@ -2,9 +2,21 @@ package radon;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import radon.guns.Bullet;
+
 public class Collision {
     
     public static void doCollision(Entity A, Entity B) {
+        
+        if (A instanceof Bullet) {
+            if (B == ((Bullet) A).p) return;
+        }
+        if (B instanceof Bullet) {
+            if (A == ((Bullet) B).p) return;
+        }
+        
+        A.onHit();
+        B.onHit();
         
         if (A.invMass + B.invMass == 0) return;
         

@@ -6,13 +6,14 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.Player;
 import radon.World;
 
 public class HeavyBullet extends Bullet {
     
-    public HeavyBullet(float x, float y) {
-        super(x, y);
-        invMass = 0.05F;
+    public HeavyBullet(Player p) {
+        super(p);
+        invMass = 0.1F;
         col = new Color(178, 147, 41);
     }
     

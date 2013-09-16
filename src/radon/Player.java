@@ -17,8 +17,8 @@ public class Player extends GenericCuboid {
     public static int R = 42;
     public static int G = 47;
     public static int B = 159;
-    public static float width = 15;
-    public static float height = 15;
+    public static float width = 20;
+    public static float height = 20;
     private Pistol pistol = new Pistol(this);
     private Shotgun shotgun = new Shotgun(this);
     private ForcefulNature fan = new ForcefulNature(this);

@@ -95,4 +95,6 @@ public abstract class Entity {
     
     public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;
     
+    public void onHit() {}
+    
 }
