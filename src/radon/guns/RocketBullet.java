@@ -6,11 +6,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.Player;
 import radon.World;
 
 public class RocketBullet extends Bullet {
-	public RocketBullet(float x, float y) {
-        super(x, y);
+	public RocketBullet(Player p) {
+        super(p);
         invMass = 0.05F;
         col = new Color(112, 128, 144);
 	}
