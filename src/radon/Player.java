@@ -86,7 +86,7 @@ public class Player extends GenericCuboid {
         if (input.isKeyPressed(Input.KEY_3)) selectedGun = shotgun;
         if (input.isKeyPressed(Input.KEY_0)) selectedGun = fan;
         if (input.isKeyPressed(Input.KEY_1)) selectedGun = launcher;
-        if ((input.isKeyPressed(Input.KEY_Q)) && (input.isKeyPressed(Input.KEY_SCROLL))) selectedGun = forcefullest;
+        if (input.isKeyPressed(Input.KEY_Q) && input.isKeyPressed(Input.KEY_Z)) selectedGun = forcefullest;
         
         float dx = input.getMouseX() - x;
         float dy = input.getMouseY() - y;

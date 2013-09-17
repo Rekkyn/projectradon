@@ -1,7 +1,6 @@
 package radon.guns;
 
 import radon.Player;
-import radon.guns.Gun.BulletType;
 
 public class ForcefulleristNature extends Gun {
     
@@ -14,15 +13,13 @@ public class ForcefulleristNature extends Gun {
     }
     
     @Override
-    
-    	public void fireAuto(float angle) {
-        	for (int i = 0; i < 5; i++) {
-                float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * p.velocity.length() + 5);
-                
-                fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
-        	}
-    	
-    	
+    public void fireAuto(float angle) {
+        for (int i = 0; i < 5; i++) {
+            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * p.velocity.length() + 5);
+            
+            fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
+        }
+        
     }
     
     @Override

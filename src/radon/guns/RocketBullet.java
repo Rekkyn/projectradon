@@ -10,12 +10,13 @@ import radon.Player;
 import radon.World;
 
 public class RocketBullet extends Bullet {
-	public RocketBullet(Player p) {
+    public RocketBullet(Player p) {
         super(p);
         invMass = 0.05F;
         col = new Color(112, 128, 144);
-	}
-	@Override
+    }
+    
+    @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
         g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
@@ -29,8 +30,3 @@ public class RocketBullet extends Bullet {
     }
     
 }
-	
-	
-	
-	
-

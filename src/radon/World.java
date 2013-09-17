@@ -36,6 +36,7 @@ public class World extends BasicGameState {
             Game.appgc.setFullscreen(false);
         }
         
+        if (delta > 25) delta = 25;
         accumulator += delta;
         
         while (accumulator >= timesetp) {
