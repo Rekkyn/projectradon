@@ -17,7 +17,7 @@ public class World extends BasicGameState {
     float accumulator = 0.0F;
     public static long tickCount = 0;
     public static float partialTicks;
-    public static final float timesetp = 50 / 3; // 1/60 second
+    public static final float timestep = 50 / 3; // 1/60 second
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -39,14 +39,14 @@ public class World extends BasicGameState {
         if (delta > 25) delta = 25;
         accumulator += delta;
         
-        while (accumulator >= timesetp) {
+        while (accumulator >= timestep) {
             if (container.hasFocus()) {
                 tick(container, game, delta);
             }
-            accumulator -= timesetp;
+            accumulator -= timestep;
         }
         
-        partialTicks = accumulator / timesetp;
+        partialTicks = accumulator / timestep;
     }
     
     public void tick(GameContainer container, StateBasedGame game, int delta) throws SlickException {

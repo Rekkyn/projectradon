@@ -13,16 +13,10 @@ public class RocketLauncher extends Gun {
     }
     
     @Override
-    public void fireAuto(float angle) {
-        
-    }
+    public void fireAuto(float angle) {}
     
     @Override
     public void fireManual(float angle, int fireDelay) {
-        
-        float angleSpread = angle;
-        fireBullet(angleSpread, bulletForce, BulletType.ROCKET);
-        
+        fireBullet(angle, bulletForce, BulletType.ROCKET);
     }
-    
 }
