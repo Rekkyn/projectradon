@@ -127,7 +127,7 @@ public class World extends BasicGameState {
         System.out.println(timestep);
         
         g.setColor(new Color(0, 0, 0));
-        Font.draw("Time speed: " + 50F / 3F / timestep + "x", 20, 20, 2, g);
+        Font.draw("Time speed: " + 50F / 3F / timestep, 20, 20, 2, g);
     }
     
     public static void add(Entity entity) {

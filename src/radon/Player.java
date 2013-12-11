@@ -1,6 +1,8 @@
 package radon;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,6 +22,7 @@ public class Player extends Character {
     private Shotgun shotgun = new Shotgun(this);
     private ForcefulNature fan = new ForcefulNature(this);
     private ForcefulleristNature forcefullest = new ForcefulleristNature(this);
+    private float gunAngle;
     
     public Player(int x, int y) {
         super(x, y, 42, 47, 159, 20, 20, true);
@@ -81,23 +84,23 @@ public class Player extends Character {
         
         float dx = input.getMouseX() - x;
         float dy = input.getMouseY() - y;
-        float angle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
+        gunAngle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
         
         if (shotToBeFired && fireDelay >= selectedGun.manualFireRate) {
-            selectedGun.fireManual(angle, fireDelay);
+            selectedGun.fireManual(gunAngle, fireDelay);
             fireDelay = 0;
             shotToBeFired = false;
         }
         
         if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate && selectedGun.autoFireRate != 0) {
-            selectedGun.fireAuto(angle);
+            selectedGun.fireAuto(gunAngle);
             fireDelay = 0;
             shotToBeFired = false;
         }
         
         if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fireDelay != 0) {
             if (fireDelay >= selectedGun.manualFireRate) {
-                selectedGun.fireManual(angle, fireDelay);
+                selectedGun.fireManual(gunAngle, fireDelay);
                 fireDelay = 0;
             } else if (selectedGun.autoFireRate != 0) {
                 shotToBeFired = true;
@@ -105,7 +108,17 @@ public class Player extends Character {
         }
         
         fireDelay++;
-        
+    }
+    
+    @Override
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        super.render(container, game, g);
+        g.pushTransform();
+        g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
+        g.setLineWidth(3);
+        g.setColor(new Color(100, 100, 100));
+        g.drawLine(x, y, x + 30 * (float) Math.cos(gunAngle * Math.PI / 180), y + 30 * (float) Math.sin(gunAngle * Math.PI / 180));
+        g.popTransform();
     }
     
 }

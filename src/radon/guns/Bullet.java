@@ -42,7 +42,7 @@ public class Bullet extends Entity {
         super.update(container, game, delta);
         
         if (!hit) {
-            velocity.scale(0.98F);
+            velocity.scale(0.99F);
         } else {
             velocity.scale(0.95F);
         }
