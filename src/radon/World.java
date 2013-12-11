@@ -75,7 +75,10 @@ public class World extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         Player p = new Player(100, 100);
         add(p);
-        int R = 42;
+        
+        Character c = new Character(100, 200, 242, 224, 42, 20, 30, true);
+        add(c);
+        /*int R = 42;
         int G = 47;
         int B = 159;
         for (int i = 0; i < 150; i++) {
@@ -96,7 +99,7 @@ public class World extends BasicGameState {
             
             e.invMass = 0;
             add(e);
-        }
+        }*/
         
     }
     

@@ -30,7 +30,7 @@ public class GenericCuboid extends Entity {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
-        if (!(this instanceof Player)) {
+        if (!(this instanceof Character)) {
             velocity.scale(0.8F);
         }
     }

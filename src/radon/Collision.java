@@ -9,10 +9,10 @@ public class Collision {
     public static void doCollision(Entity A, Entity B) {
         
         if (A instanceof Bullet) {
-            if (B == ((Bullet) A).p) return;
+            if (B == ((Bullet) A).c) return;
         }
         if (B instanceof Bullet) {
-            if (A == ((Bullet) B).p) return;
+            if (A == ((Bullet) B).c) return;
         }
         
         A.onHit();

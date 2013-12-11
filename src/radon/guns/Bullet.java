@@ -6,18 +6,18 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.Character;
 import radon.Entity;
-import radon.Player;
 import radon.World;
 
 public class Bullet extends Entity {
     public int ticksOnGround = 0;
     public boolean hit = false;
-    public Player p;
+    public Character c;
     
-    public Bullet(Player p) {
-        super(p.x, p.y);
-        this.p = p;
+    public Bullet(Character c) {
+        super(c.x, c.y);
+        this.c = c;
         invMass = 0.99F;
         restitution = 0.1F;
         gravity = true;

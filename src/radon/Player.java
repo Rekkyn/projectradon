@@ -7,31 +7,22 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import radon.guns.ForcefulNature;
 import radon.guns.ForcefulleristNature;
-import radon.guns.Gun;
 import radon.guns.Pistol;
 import radon.guns.RocketLauncher;
 import radon.guns.Shotgun;
 
-public class Player extends GenericCuboid {
+public class Player extends Character {
     
     public float walkSpeed = 3.0F;
     public int walljumpCooldown = 0;
-    public static int R = 42;
-    public static int G = 47;
-    public static int B = 159;
-    public static float width = 20;
-    public static float height = 20;
     private Pistol pistol = new Pistol(this);
     private RocketLauncher launcher = new RocketLauncher(this);
     private Shotgun shotgun = new Shotgun(this);
     private ForcefulNature fan = new ForcefulNature(this);
     private ForcefulleristNature forcefullest = new ForcefulleristNature(this);
-    public Gun selectedGun = pistol;
-    public int fireDelay = selectedGun.autoFireRate;
-    public boolean shotToBeFired = false;
     
     public Player(int x, int y) {
-        super(x, y, R, G, B, width, height, true);
+        super(x, y, 42, 47, 159, 20, 20, true);
         restitution = 0.0F;
         gravity = true;
     }

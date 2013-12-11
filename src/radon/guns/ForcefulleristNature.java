@@ -15,7 +15,7 @@ public class ForcefulleristNature extends Gun {
     @Override
     public void fireAuto(float angle) {
         for (int i = 0; i < 5; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * p.velocity.length() + 5);
+            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * c.velocity.length() + 5);
             
             fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
         }
@@ -25,7 +25,7 @@ public class ForcefulleristNature extends Gun {
     @Override
     public void fireManual(float angle, int fireDelay) {
         for (int i = 0; i < 5; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * p.velocity.length() + 5);
+            float angleSpread = angle + (rand.nextFloat() * 2 - 1) * (2 * c.velocity.length() + 5);
             fireBullet(angleSpread, bulletForce, BulletType.HEAVY);
         }
     }
