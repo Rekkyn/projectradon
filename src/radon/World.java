@@ -17,7 +17,9 @@ public class World extends BasicGameState {
     float accumulator = 0.0F;
     public static long tickCount = 0;
     public static float partialTicks;
-    public static final float timestep = 50 / 3; // 1/60 second
+    public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
+    public static int selectedTime = 2;
+    public static float timestep = 50F / 3F; // 1/60 second
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -34,6 +36,15 @@ public class World extends BasicGameState {
         }
         if (input.isKeyPressed(Input.KEY_ESCAPE) && Game.appgc.isFullscreen()) {
             Game.appgc.setFullscreen(false);
+        }
+        
+        if (input.isKeyPressed(Input.KEY_COMMA) && selectedTime != 0) {
+            selectedTime--;
+            timestep = timespeeds[selectedTime];
+        }
+        if (input.isKeyPressed(Input.KEY_PERIOD) && selectedTime != timespeeds.length - 1) {
+            selectedTime++;
+            timestep = timespeeds[selectedTime];
         }
         
         if (delta > 25) delta = 25;
@@ -113,6 +124,10 @@ public class World extends BasicGameState {
             
             e.render(container, game, g);
         }
+        System.out.println(timestep);
+        
+        g.setColor(new Color(0, 0, 0));
+        Font.draw("Time speed: " + 50F / 3F / timestep + "x", 20, 20, 2, g);
     }
     
     public static void add(Entity entity) {
