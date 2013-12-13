@@ -22,6 +22,7 @@ public class World extends BasicGameState {
     public static int selectedTime = 2;
     public static float timestep = 50F / 3F; // 1/60 second
     Player p = new Player(100, 100);
+    public boolean visibility = true;
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -47,6 +48,10 @@ public class World extends BasicGameState {
         if (input.isKeyPressed(Input.KEY_PERIOD) && selectedTime != timespeeds.length - 1) {
             selectedTime++;
             timestep = timespeeds[selectedTime];
+        }
+        
+        if (input.isKeyPressed(Input.KEY_V)) {
+            visibility = !visibility;
         }
         
         if (delta > 25) delta = 25;
@@ -97,24 +102,17 @@ public class World extends BasicGameState {
         int R = 42;
         int G = 47;
         int B = 159;
-        for (int i = 0; i < 150; i++) {
-            
-            boolean physics = false;
-            GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
-                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics);
-            
-            e.invMass = 0;
-            add(e);
-        }
         
-        for (int i = 0; i < 50; i++) {
-            
-            boolean physics = true;
+        while (entities.size() < 200) {
             GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
-                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, physics);
-            
+                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, rand.nextInt(4) == 0 ? true : false);
             e.invMass = 0;
-            add(e);
+            e.col = new Color(42, 47, 159);
+            boolean add = true;
+            for (Entity LOL : entities) {
+                if (e.intersects(LOL)) add = false;
+            }
+            if (add) add(e);
         }
         
     }
@@ -130,30 +128,26 @@ public class World extends BasicGameState {
             e.render(container, game, g);
         }
         
-        for (Segment s : Visibility.segments) {
-            g.setColor(new Color(200, 200, 200));
-            // g.drawLine(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
-        }
-        
-        System.out.println(timestep);
-        
         g.setColor(new Color(0, 0, 0));
         Font.draw("Time speed: " + 50F / 3F / timestep, 20, 20, 2, g);
+        Font.draw("FPS: " + Game.appgc.getFPS(), 20, 35, 2, g);
         
-        for (int i = 0; i < Visibility.output.size(); i += 2) {
-            Vector2f p1 = Visibility.output.get(i);
-            Vector2f p2 = Visibility.output.get(i + 1);
-            Vector2f p3 = new Vector2f(Visibility.output.get(Visibility.output.size() - 1).x, Visibility.output.get(Visibility.output
-                    .size() - 1).y);
-            if (i > 0) {
-                p3 = Visibility.output.get(i - 1);
+        if (visibility) {
+            for (int i = 0; i < Visibility.output.size(); i += 2) {
+                Vector2f p1 = Visibility.output.get(i);
+                Vector2f p2 = Visibility.output.get(i + 1);
+                Vector2f p3 = new Vector2f(Visibility.output.get(Visibility.output.size() - 1).x, Visibility.output.get(Visibility.output
+                        .size() - 1).y);
+                if (i > 0) {
+                    p3 = Visibility.output.get(i - 1);
+                }
+                g.setColor(new Color(0, 0, 0));
+                g.setLineWidth(1);
+                g.drawLine(p3.x, p3.y, p1.x, p1.y);
+                g.setColor(Visibility.outputColours.get(i / 2).brighter(1.5F));
+                g.setLineWidth(2);
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
-            g.setColor(new Color(0, 0, 0));
-            g.setLineWidth(1);
-            g.drawLine(p3.x, p3.y, p1.x, p1.y);
-            g.setColor(Visibility.outputColours.get(i / 2).brighter(1.5F));
-            g.setLineWidth(2);
-            g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
         
     }

@@ -31,9 +31,6 @@ public class RocketBullet extends Bullet {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
-        g.setColor(new Color(0, 0, 0));
-        g.drawLine(x, y, x + prevVelocity.x, y + prevVelocity.y);
-        g.drawLine(x, y, x + velocity.x, y + velocity.y);
         g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
         g.setColor(col);
         float xRotate = x;

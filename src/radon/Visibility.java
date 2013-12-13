@@ -3,7 +3,7 @@
 // License: Apache v2
 // Converted to Java by Rekkyn
 
-/* 
+/*
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -15,7 +15,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package radon;
 
@@ -28,6 +28,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
 import radon.Segment.EndPoint;
+import radon.guns.Bullet;
 
 public class Visibility {
     
@@ -43,7 +44,7 @@ public class Visibility {
         endpoints.clear();
         
         for (Entity e : entities) {
-            if (!(e instanceof Player)) {
+            if (!(e instanceof Player) && !(e instanceof Bullet)) {
                 Color col = e.col;
                 addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y - e.height / 2, col); // top
                 addSegment(e.x + e.width / 2, e.y - e.height / 2, e.x + e.width / 2, e.y + e.height / 2, col); // right
