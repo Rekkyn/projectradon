@@ -31,18 +31,18 @@ import radon.Segment.EndPoint;
 import radon.guns.Bullet;
 
 public class Visibility {
-    
+
     public static List<Segment> segments = new ArrayList<Segment>();
     public static List<EndPoint> endpoints = new ArrayList<EndPoint>();
     public static List<Segment> open = new ArrayList<Segment>();
     public static Vector2f light = new Vector2f();
     public static List<Vector2f> output = new ArrayList<Vector2f>();
     public static List<Color> outputColours = new ArrayList<Color>();
-    
+
     public static void load(List<Entity> entities) {
         segments.clear();
         endpoints.clear();
-        
+
         for (Entity e : entities) {
             if (!(e instanceof Player) && !(e instanceof Bullet)) {
                 Color col = e.col;
@@ -52,35 +52,35 @@ public class Visibility {
                 addSegment(e.x - e.width / 2, e.y - e.height / 2, e.x - e.width / 2, e.y + e.height / 2, col); // left
             }
         }
-        
+
         addSegment(0, 0, Game.width, 0, new Color(0, 0, 0)); // top
         addSegment(Game.width, 0, Game.width, Game.height, new Color(0, 0, 0)); // right
         addSegment(0, Game.height, Game.width, Game.height, new Color(0, 0, 0)); // bottom
         addSegment(0, 0, 0, Game.height, new Color(0, 0, 0)); // left
     }
-    
+
     public static void addSegment(float x1, float y1, float x2, float y2, Color col) {
         Segment s = new Segment(col);
         EndPoint p1 = s.new EndPoint(x1, y1, s);
         EndPoint p2 = s.new EndPoint(x2, y2, s);
         s.p1 = p1;
         s.p2 = p2;
-        
+
         segments.add(s);
         endpoints.add(p1);
         endpoints.add(p2);
     }
-    
+
     public static void setLightLocation(float x, float y) {
         light.set(x, y);
-        
+
         for (Segment s : segments) {
             float dx = 0.5F * (s.p1.x + s.p2.x) - x;
             float dy = 0.5F * (s.p1.y + s.p2.y) - y;
             // NOTE: we only use this for comparison so we can use
             // distance squared instead of distance
             s.distance = dx * dx + dy * dy;
-            
+
             // NOTE: future optimization: we could record the quadrant
             // and the y/x or x/y ratio, and sort by (quadrant,
             // ratio), instead of calling atan2. See
@@ -88,7 +88,7 @@ public class Visibility {
             // library that does this.
             s.p1.angle = (float) Math.atan2(s.p1.y - y, s.p1.x - x);
             s.p2.angle = (float) Math.atan2(s.p2.y - y, s.p2.x - x);
-            
+
             double dAngle = s.p2.angle - s.p1.angle;
             if (dAngle <= -Math.PI) {
                 dAngle += 2 * Math.PI;
@@ -100,7 +100,7 @@ public class Visibility {
             s.p2.begin = !s.p1.begin;
         }
     }
-    
+
     // Run the algorithm, sweeping over all or part of the circle to find
     // the visible area, represented as a set of triangles
     public static void sweep() {
@@ -108,10 +108,10 @@ public class Visibility {
         output.clear();
         outputColours.clear();
         Collections.sort(endpoints);
-        
+
         open.clear();
         float beginAngle = 0.0F;
-        
+
         // At the beginning of the sweep we want to know which
         // segments are active. The simplest way to do this is to make
         // a pass collecting the segments, and make another pass to
@@ -125,9 +125,9 @@ public class Visibility {
                     // process
                     break;
                 }
-                
+
                 Segment current_old = open.isEmpty() ? null : open.get(0);
-                
+
                 if (p.begin) {
                     // Insert into the right place in the list
                     Segment node = null;
@@ -146,7 +146,7 @@ public class Visibility {
                 } else {
                     open.remove(p.segment);
                 }
-                
+
                 Segment current_new = open.isEmpty() ? null : open.get(0);
                 if (current_old != current_new) {
                     if (pass == 1) {
@@ -157,7 +157,7 @@ public class Visibility {
             }
         }
     }
-    
+
     // Helper: do we know that segment a is in front of b?
     // Implementation not anti-symmetric (that is to say,
     // _segment_in_front_of(a, b) != (!_segment_in_front_of(b, a)).
@@ -175,7 +175,7 @@ public class Visibility {
         boolean B1 = leftOf(b, interpolate(a.p1, a.p2, 0.01F));
         boolean B2 = leftOf(b, interpolate(a.p2, a.p1, 0.01F));
         boolean B3 = leftOf(b, light);
-        
+
         // NOTE: this algorithm is probably worthy of a short article
         // but for now, draw it on paper to see how it works. Consider
         // the line A1-A2. If both B1 and B2 are on one side and
@@ -187,38 +187,38 @@ public class Visibility {
         if (A1 == A2 && A2 == A3) return true;
         if (A1 == A2 && A2 != A3) return false;
         if (B1 == B2 && B2 == B3) return false;
-        
+
         // If A1 != A2 and B1 != B2 then we have an intersection.
         // Expose it for the GUI to show a message. A more robust
         // implementation would split segments at intersections so
         // that part of the segment is in front and part is behind.
         // demo_intersectionsDetected.push([a.p1, a.p2, b.p1, b.p2]);
         return false;
-        
+
         // NOTE: previous implementation was a.d < b.d. That's simpler
         // but trouble when the segments are of dissimilar sizes. If
         // you're on a grid and the segments are similarly sized, then
         // using distance will be a simpler and faster implementation.
     }
-    
+
     // Helper: leftOf(segment, point) returns true if point is
     // "left" of segment treated as a vector
     static final private boolean leftOf(Segment s, Vector2f p) {
         float cross = (s.p2.x - s.p1.x) * (p.y - s.p1.y) - (s.p2.y - s.p1.y) * (p.x - s.p1.x);
         return cross < 0;
     }
-    
+
     // Return p*(1-f) + q*f
     static private Vector2f interpolate(EndPoint p, EndPoint q, float f) {
         return new Vector2f(p.x * (1 - f) + q.x * f, p.y * (1 - f) + q.y * f);
     }
-    
+
     private static void addTriangle(float angle1, float angle2, Segment segment) {
         Vector2f p1 = light;
         Vector2f p2 = new Vector2f(light.x + (float) Math.cos(angle1), light.y + (float) Math.sin(angle1));
         Vector2f p3 = new Vector2f();
         Vector2f p4 = new Vector2f();
-        
+
         if (segment != null) {
             // Stop the triangle at the intersecting segment
             p3.x = segment.p1.x;
@@ -233,13 +233,13 @@ public class Visibility {
             p4.x = light.x + (float) Math.cos(angle2) * 500;
             p4.y = light.y + (float) Math.sin(angle2) * 500;
         }
-        
+
         Vector2f pBegin = lineIntersection(p3, p4, p1, p2);
-        
+
         p2.x = light.x + (float) Math.cos(angle2);
         p2.y = light.y + (float) Math.sin(angle2);
         Vector2f pEnd = lineIntersection(p3, p4, p1, p2);
-        
+
         if (output.isEmpty()) {
             output.add(pBegin);
         } else {
@@ -248,12 +248,12 @@ public class Visibility {
         output.add(0, pEnd);
         outputColours.add(0, segment.col);
     }
-    
+
     public static Vector2f lineIntersection(Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4) {
         // From http://paulbourke.net/geometry/lineline2d/
         float s = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x))
                 / ((p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y));
         return new Vector2f(p1.x + s * (p2.x - p1.x), p1.y + s * (p2.y - p1.y));
     }
-    
+
 }

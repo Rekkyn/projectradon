@@ -12,7 +12,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class Entity {
-    
+
     public float x, y;
     public float prevX, prevY;
     public Vector2f velocity;
@@ -29,9 +29,11 @@ public abstract class Entity {
     public boolean onGround;
     public boolean physics = false;
     public boolean gravity = false;
-    /** 0 = not on wall, 1 = left wall, 2 = right wall */
+    /**
+     * 0 = not on wall, 1 = left wall, 2 = right wall
+     */
     public byte onWall;
-    
+
     public Entity(float x, float y) {
         this.x = x;
         this.y = y;
@@ -41,7 +43,7 @@ public abstract class Entity {
         prevVelocity = new Vector2f(0, 0);
         force = new Vector2f(0, 0);
     }
-    
+
     public Entity(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
@@ -51,50 +53,52 @@ public abstract class Entity {
         prevVelocity = new Vector2f(0, 0);
         force = new Vector2f(0, 0);
     }
-    
+
     public void remove() {
         removed = true;
     }
-    
+
     public boolean intersects(Entity e) {
         if (e.x - e.width / 2 > x + width / 2 || x - width / 2 > e.x + e.width / 2) return false;
         if (e.y - e.height / 2 > y + height / 2 || y - height / 2 > e.y + e.height / 2) return false;
         return true;
     }
-    
+
     public boolean isCollidable() {
         return true;
     }
-    
-    public void init() {}
-    
+
+    public void init() {
+    }
+
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         ticksExisted++;
         GameState state = game.getCurrentState();
         if (!(state instanceof World)) return;
-        
+
         prevVelocity.set(velocity);
-        
+
         if (physics) {
             invMass = 1F / (width * height);
         }
-        
+
         if (gravity) {
             velocity.y += 0.2;
         }
-        
+
         prevX = x;
         prevY = y;
-        
+
         velocity.add(force.scale(invMass));
         force.set(0, 0);
-        
+
         x += velocity.x;
         y += velocity.y;
     }
-    
+
     public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;
-    
-    public void onHit() {}
-    
+
+    public void onHit() {
+    }
+
 }

@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GenericCuboid extends Entity {
-    
+
     public GenericCuboid(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean physicsactive) {
         super(x, y, width, height);
         col = new Color(colourR, colourG, colourB);
@@ -15,7 +15,7 @@ public class GenericCuboid extends Entity {
         this.height = height;
         physics = physicsactive;
     }
-    
+
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(col);
@@ -26,7 +26,7 @@ public class GenericCuboid extends Entity {
         // g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
         g.popTransform();
     }
-    
+
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
