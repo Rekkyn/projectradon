@@ -1,9 +1,6 @@
 package radon.guns;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,7 +14,7 @@ public class RocketBullet extends Bullet {
         col = new Color(112, 128, 144);
         gravity = false;
     }
-
+    
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
@@ -27,7 +24,7 @@ public class RocketBullet extends Bullet {
         // prevVelocity.getTheta());
         force.add(v);
     }
-
+    
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
@@ -40,10 +37,10 @@ public class RocketBullet extends Bullet {
         g.rotate(xRotate, yRotate, (float) -velocity.getTheta());
         g.popTransform();
     }
-
+    
     @Override
     public void onHit() {
         remove();
     }
-
+    
 }

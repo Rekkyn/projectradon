@@ -1,22 +1,19 @@
 package radon.guns;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 import radon.Character;
 import radon.World;
 
 public class HeavyBullet extends Bullet {
-
+    
     public HeavyBullet(Character c) {
         super(c);
         invMass = 0.1F;
         col = new Color(178, 147, 41);
     }
-
+    
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
@@ -29,5 +26,5 @@ public class HeavyBullet extends Bullet {
         g.rotate(xRotate, yRotate, (float) -velocity.getTheta());
         g.popTransform();
     }
-
+    
 }

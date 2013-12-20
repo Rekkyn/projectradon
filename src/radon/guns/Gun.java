@@ -8,28 +8,28 @@ import radon.Character;
 import radon.World;
 
 public abstract class Gun {
-
+    
     Random rand = new Random();
-
+    
     public Character c;
-
+    
     public int autoFireRate;
     public int manualFireRate;
-
+    
     public enum BulletType {
         NORMAL, HEAVY, ROCKET
     }
-
+    
     public Gun(Character character, int autoFireRate, int manualFireRate) {
         c = character;
         this.autoFireRate = autoFireRate;
         this.manualFireRate = manualFireRate;
     }
-
+    
     public abstract void fireAuto(float angle);
-
+    
     public abstract void fireManual(float angle, int fireDelay);
-
+    
     public void fireBullet(float angle, float force, BulletType type) {
         Bullet b;
         switch (type) {
@@ -39,15 +39,15 @@ public abstract class Gun {
             case ROCKET:
                 b = new RocketBullet(c);
                 break;
-
+            
             default:
                 b = new Bullet(c);
         }
-
+        
         // if (b instanceof RocketBullet) {
-
+        
         // b.velocity.set(1.5F, (float) p.velocity.getTheta());
-
+        
         // } else {
         b.velocity.set(c.velocity); // should bullets be fired with relative
         // speed to the player?
@@ -57,8 +57,8 @@ public abstract class Gun {
         Vector2f v = new Vector2f(force, 0);
         v.setTheta(180 + angle);
         c.force.add(v);
-
+        
         World.add(b);
     }
-
+    
 }
