@@ -30,6 +30,8 @@ public abstract class Entity {
      */
     public byte onWall;
     
+    public World world;
+    
     public Entity(float x, float y) {
         this.x = x;
         this.y = y;
@@ -70,6 +72,7 @@ public abstract class Entity {
         ticksExisted++;
         GameState state = game.getCurrentState();
         if (!(state instanceof World)) return;
+        world = (World) game.getCurrentState();
         
         prevVelocity.set(velocity);
         
@@ -78,7 +81,7 @@ public abstract class Entity {
         }
         
         if (gravity) {
-            velocity.y += 0.2;
+            velocity.add(World.gravity);
         }
         
         prevX = x;

@@ -23,6 +23,10 @@ public class World extends BasicGameState {
     
     public static Random rand = new Random();
     
+    public static boolean gunFocus = true;
+    public static Vector2f gravity = new Vector2f(0F, 0.2F);
+    public static Vector2f gravity1, gravity2;
+    
     public World(int play, StateBasedGame radon) {
         this.radon = radon;
     }
@@ -55,6 +59,23 @@ public class World extends BasicGameState {
             o.toggleVisibility();
         }
         
+        if (input.isKeyDown(Input.KEY_G)) {
+            gunFocus = false;
+            if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+                gravity1 = new Vector2f(input.getMouseX(), input.getMouseY());
+            }
+            if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+                gravity2 = new Vector2f(input.getMouseX(), input.getMouseY());
+            }
+            if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && gravity1 != null) {
+                gravity = new Vector2f((gravity2.x - gravity1.x) * 0.02F, (gravity2.y - gravity1.y) * 0.02F);
+                gravity1 = null;
+                gravity2 = null;
+            }
+        } else {
+            gunFocus = true;
+        }
+
         if (delta > 25) delta = 25;
         accumulator += delta;
         
@@ -120,6 +141,8 @@ public class World extends BasicGameState {
     
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        Input input = container.getInput();
+        
         g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, Game.width, Game.height);
         
@@ -149,6 +172,11 @@ public class World extends BasicGameState {
                 g.setLineWidth(2);
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
+        }
+        if (input.isKeyDown(Input.KEY_G)) {
+            if (gravity1 != null)
+                g.drawOval(gravity1.x - 5, gravity1.y - 5, 10, 10);
+            if (gravity2 != null) g.drawOval(gravity2.x - 5, gravity2.y - 5, 10, 10);
         }
         
     }

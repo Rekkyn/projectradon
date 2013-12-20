@@ -84,18 +84,20 @@ public class Player extends Character {
             shotToBeFired = false;
         }
         
-        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate && selectedGun.autoFireRate != 0) {
-            selectedGun.fireAuto(gunAngle);
-            fireDelay = 0;
-            shotToBeFired = false;
-        }
-        
-        if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fireDelay != 0) {
-            if (fireDelay >= selectedGun.manualFireRate) {
-                selectedGun.fireManual(gunAngle, fireDelay);
+        if (world.gunFocus) {
+            if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate && selectedGun.autoFireRate != 0) {
+                selectedGun.fireAuto(gunAngle);
                 fireDelay = 0;
-            } else if (selectedGun.autoFireRate != 0) {
-                shotToBeFired = true;
+                shotToBeFired = false;
+            }
+            
+            if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fireDelay != 0) {
+                if (fireDelay >= selectedGun.manualFireRate) {
+                    selectedGun.fireManual(gunAngle, fireDelay);
+                    fireDelay = 0;
+                } else if (selectedGun.autoFireRate != 0) {
+                    shotToBeFired = true;
+                }
             }
         }
         
