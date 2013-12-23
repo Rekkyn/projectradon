@@ -2,12 +2,13 @@ package radon;
 
 import java.util.*;
 
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class World extends BasicGameState {
+public class GameWorld extends BasicGameState {
     
     float accumulator = 0.0F;
     private StateBasedGame radon;
@@ -24,10 +25,10 @@ public class World extends BasicGameState {
     public static Random rand = new Random();
     
     public static boolean gunFocus = true;
-    public static Vector2f gravity = new Vector2f(0F, 0.2F);
+    public static Vec2 gravity = new Vec2(0F, 9.8F);
     public static Vector2f gravity1, gravity2;
     
-    public World(int play, StateBasedGame radon) {
+    public GameWorld(int play, StateBasedGame radon) {
         this.radon = radon;
     }
     
@@ -68,14 +69,14 @@ public class World extends BasicGameState {
                 gravity2 = new Vector2f(input.getMouseX(), input.getMouseY());
             }
             if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && gravity1 != null) {
-                gravity = new Vector2f((gravity2.x - gravity1.x) * 0.02F, (gravity2.y - gravity1.y) * 0.02F);
+                gravity = new Vec2((gravity2.x - gravity1.x) * 0.02F, (gravity2.y - gravity1.y) * 0.02F);
                 gravity1 = null;
                 gravity2 = null;
             }
         } else {
             gunFocus = true;
         }
-
+        
         if (delta > 25) delta = 25;
         accumulator += delta;
         
@@ -95,21 +96,16 @@ public class World extends BasicGameState {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             
-            for (int j = 0; j < entities.size(); j++) {
-                Entity e2 = entities.get(j);
-                if (e2 != e && e.intersects(e2) && e.isCollidable() && e2.isCollidable()) {
-                    Collision.doCollision(e, e2);
-                }
-            }
-            
             e.update(container, game, delta);
-            Collision.doEdgeCollision(e);
             
             if (e.removed) {
                 entities.remove(i--);
             }
             
         }
+        
+        Collision.world.step(1F / 60, 6, 3);
+        
         Visibility.load(entities);
         Visibility.setLightLocation(p.x, p.y);
         Visibility.sweep();
@@ -117,7 +113,17 @@ public class World extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        add(p);
+        
+        for (int lol = 0; lol < 20; lol++) {
+            DynamicBox box = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 42, 47, 159, 1, 1,
+                    true);
+            add(box);
+        }
+        
+        Wall w = new Wall(Game.width / 40, Game.height / 20, 242, 224, 42, Game.width / 20, 0.5F);
+        add(w);
+        
+        /*add(p);
         
         Character c = new Character(100, 200, 242, 224, 42, 20, 30, true);
         add(c);
@@ -126,7 +132,7 @@ public class World extends BasicGameState {
         int B = 159;
         
         while (entities.size() < 200) {
-            GenericCuboid e = new GenericCuboid(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
+            DynamicBox e = new DynamicBox(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
                     rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, rand.nextInt(4) == 0 ? true : false);
             e.invMass = 0;
             e.col = new Color(42, 47, 159);
@@ -135,7 +141,7 @@ public class World extends BasicGameState {
                 if (e.intersects(LOL)) add = false;
             }
             if (add) add(e);
-        }
+        }*/
         
     }
     
@@ -156,6 +162,8 @@ public class World extends BasicGameState {
         Font.draw("Time speed: " + 50F / 3F / timestep, 20, 20, 2, g);
         Font.draw("FPS: " + Game.appgc.getFPS(), 20, 35, 2, g);
         
+        g.pushTransform();
+        g.scale(20, 20);
         if (o.getVisibility()) {
             for (int i = 0; i < Visibility.output.size(); i += 2) {
                 Vector2f p1 = Visibility.output.get(i);
@@ -173,6 +181,7 @@ public class World extends BasicGameState {
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }
+        g.popTransform();
         if (input.isKeyDown(Input.KEY_G)) {
             if (gravity1 != null)
                 g.drawOval(gravity1.x - 5, gravity1.y - 5, 10, 10);

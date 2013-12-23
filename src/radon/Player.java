@@ -108,7 +108,7 @@ public class Player extends Character {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         super.render(container, game, g);
         g.pushTransform();
-        g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
+        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
         g.setLineWidth(3);
         g.setColor(new Color(100, 100, 100));
         g.drawLine(x, y, x + 30 * (float) Math.cos(gunAngle * Math.PI / 180), y + 30 * (float) Math.sin(gunAngle * Math.PI / 180));

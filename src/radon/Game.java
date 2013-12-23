@@ -22,9 +22,9 @@ public class Game extends StateBasedGame {
         
         try {
             appgc = new AppGameContainer(new Game(NAME));
-            width = appgc.getScreenWidth();
-            height = appgc.getScreenHeight();
-            appgc.setDisplayMode(width, height, true);
+            // width = appgc.getScreenWidth();
+            // height = appgc.getScreenHeight();
+            appgc.setDisplayMode(width, height, false);
             appgc.setShowFPS(false);
             appgc.start();
             
@@ -36,7 +36,7 @@ public class Game extends StateBasedGame {
     
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
-        addState(new World(WORLD, this));
+        addState(new GameWorld(WORLD, this));
         addState(new Menu(MENU, this));
         
     }

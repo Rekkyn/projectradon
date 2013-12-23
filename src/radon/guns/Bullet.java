@@ -1,5 +1,6 @@
 package radon.guns;
 
+import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -12,7 +13,7 @@ public class Bullet extends Entity {
     public Character c;
     
     public Bullet(Character c) {
-        super(c.x, c.y);
+        super(c.x, c.y, BodyType.DYNAMIC);
         this.c = c;
         invMass = 0.99F;
         restitution = 0.1F;
@@ -23,7 +24,7 @@ public class Bullet extends Entity {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
-        g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
+        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
         g.setColor(col);
         float xRotate = x;
         float yRotate = y;

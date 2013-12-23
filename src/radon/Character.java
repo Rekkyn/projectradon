@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import radon.guns.Gun;
 import radon.guns.Pistol;
 
-public class Character extends GenericCuboid {
+public class Character extends DynamicBox {
     
     public float walkSpeed = 3.0F;
     public int walljumpCooldown = 0;

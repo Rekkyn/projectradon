@@ -2,6 +2,7 @@ package radon;
 
 import java.util.Random;
 
+import org.jbox2d.dynamics.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -10,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class Entity {
     
     public float x, y;
+    public float angle;
     public float prevX, prevY;
     public Vector2f velocity;
     public Vector2f prevVelocity;
@@ -30,26 +32,24 @@ public abstract class Entity {
      */
     public byte onWall;
     
-    public World world;
+    FixtureDef fd = new FixtureDef();
+    Body body;
+    BodyType type;
     
-    public Entity(float x, float y) {
+    public GameWorld world;
+    
+    public Entity(float x, float y, BodyType type) {
         this.x = x;
         this.y = y;
-        width = 0;
-        height = 0;
-        velocity = new Vector2f(0, 0);
-        prevVelocity = new Vector2f(0, 0);
-        force = new Vector2f(0, 0);
+        this.type = type;
     }
     
-    public Entity(float x, float y, float width, float height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        velocity = new Vector2f(0, 0);
-        prevVelocity = new Vector2f(0, 0);
-        force = new Vector2f(0, 0);
+    public void physics() {
+        BodyDef bd = new BodyDef();
+        bd.position.set(x, y);
+        bd.type = type;
+        body = Collision.world.createBody(bd);
+        body.createFixture(fd);
     }
     
     public void remove() {
@@ -71,27 +71,16 @@ public abstract class Entity {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         ticksExisted++;
         GameState state = game.getCurrentState();
-        if (!(state instanceof World)) return;
-        world = (World) game.getCurrentState();
+        if (!(state instanceof GameWorld)) return;
+        world = (GameWorld) game.getCurrentState();
         
-        prevVelocity.set(velocity);
-        
-        if (physics) {
-            invMass = 1F / (width * height);
-        }
-        
-        if (gravity) {
-            velocity.add(World.gravity);
-        }
         
         prevX = x;
         prevY = y;
         
-        velocity.add(force.scale(invMass));
-        force.set(0, 0);
-        
-        x += velocity.x;
-        y += velocity.y;
+        x = body.getPosition().x;
+        y = body.getPosition().y;
+        angle = body.getAngle();
     }
     
     public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;

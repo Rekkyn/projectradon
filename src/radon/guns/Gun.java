@@ -5,7 +5,7 @@ import java.util.Random;
 import org.newdawn.slick.geom.Vector2f;
 
 import radon.Character;
-import radon.World;
+import radon.GameWorld;
 
 public abstract class Gun {
     
@@ -58,7 +58,7 @@ public abstract class Gun {
         v.setTheta(180 + angle);
         c.force.add(v);
         
-        World.add(b);
+        GameWorld.add(b);
     }
     
 }

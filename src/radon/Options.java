@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
  * Date: 13/12/13 Time: 10:06 PM
  */
 public class Options {
-    boolean visibility = true;
+    boolean visibility = false;
     static int timescale = 2;
     boolean fullscreen = false;
     private String id;

@@ -5,7 +5,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import radon.Character;
-import radon.World;
+import radon.GameWorld;
 
 public class RocketBullet extends Bullet {
     public RocketBullet(Character c) {
@@ -28,7 +28,7 @@ public class RocketBullet extends Bullet {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.pushTransform();
-        g.translate(World.partialTicks * (x - prevX), World.partialTicks * (y - prevY));
+        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
         g.setColor(col);
         float xRotate = x;
         float yRotate = y;
