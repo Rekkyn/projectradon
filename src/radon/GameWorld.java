@@ -101,7 +101,6 @@ public class GameWorld extends BasicGameState {
             if (e.removed) {
                 entities.remove(i--);
             }
-            
         }
         
         Collision.world.step(1F / 60, 6, 3);
@@ -114,34 +113,29 @@ public class GameWorld extends BasicGameState {
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
-        for (int lol = 0; lol < 20; lol++) {
-            DynamicBox box = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 42, 47, 159, 1, 1,
-                    true);
-            add(box);
-        }
-        
         Wall w = new Wall(Game.width / 40, Game.height / 20, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
-        /*add(p);
         
-        Character c = new Character(100, 200, 242, 224, 42, 20, 30, true);
-        add(c);
-        int R = 42;
-        int G = 47;
-        int B = 159;
-        
-        while (entities.size() < 200) {
-            DynamicBox e = new DynamicBox(rand.nextFloat() * Game.width, rand.nextFloat() * Game.height, R, G, B,
-                    rand.nextFloat() * 50 + 5, rand.nextFloat() * 50 + 5, rand.nextInt(4) == 0 ? true : false);
-            e.invMass = 0;
-            e.col = new Color(42, 47, 159);
+        while (entities.size() < 50) {
+            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 42, 47, 159,
+                    rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
             boolean add = true;
             for (Entity LOL : entities) {
-                if (e.intersects(LOL)) add = false;
+                if (db.intersects(LOL)) add = false;
             }
-            if (add) add(e);
-        }*/
+            if (add) add(db);
+        }
+        while (entities.size() < 100) {
+            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 57, 90, 200,
+                    rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
+            boolean add = true;
+            for (Entity LOL : entities) {
+                if (db.intersects(LOL)) add = false;
+            }
+            if (add) add(db);
+        }
+        
         
     }
     

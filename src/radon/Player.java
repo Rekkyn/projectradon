@@ -18,7 +18,6 @@ public class Player extends Character {
     
     public Player(int x, int y) {
         super(x, y, 42, 47, 159, 20, 20, true);
-        restitution = 0.0F;
         gravity = true;
     }
     
@@ -84,7 +83,7 @@ public class Player extends Character {
             shotToBeFired = false;
         }
         
-        if (world.gunFocus) {
+        if (GameWorld.gunFocus) {
             if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && fireDelay >= selectedGun.autoFireRate && selectedGun.autoFireRate != 0) {
                 selectedGun.fireAuto(gunAngle);
                 fireDelay = 0;

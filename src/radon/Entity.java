@@ -15,17 +15,13 @@ public abstract class Entity {
     public float prevX, prevY;
     public Vector2f velocity;
     public Vector2f prevVelocity;
-    public Vector2f force;
     public boolean removed;
     public long ticksExisted = 0;
     public float width, height;
-    public float invMass = 0;
-    public float restitution = 0.8F;
     public Color col = new Color(0, 0, 0);
     Input input;
     Random rand = new Random();
     public boolean onGround;
-    public boolean physics = false;
     public boolean gravity = false;
     /**
      * 0 = not on wall, 1 = left wall, 2 = right wall
@@ -44,14 +40,6 @@ public abstract class Entity {
         this.type = type;
     }
     
-    public void physics() {
-        BodyDef bd = new BodyDef();
-        bd.position.set(x, y);
-        bd.type = type;
-        body = Collision.world.createBody(bd);
-        body.createFixture(fd);
-    }
-    
     public void remove() {
         removed = true;
     }
@@ -66,7 +54,14 @@ public abstract class Entity {
         return true;
     }
     
-    public void init() {}
+    public void init() {
+        BodyDef bd = new BodyDef();
+        bd.position.set(x, y);
+        bd.type = type;
+        bd.fixedRotation = false;
+        body = Collision.world.createBody(bd);
+        body.createFixture(fd);
+    }
     
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         ticksExisted++;
@@ -74,13 +69,15 @@ public abstract class Entity {
         if (!(state instanceof GameWorld)) return;
         world = (GameWorld) game.getCurrentState();
         
-        
         prevX = x;
         prevY = y;
-        
         x = body.getPosition().x;
         y = body.getPosition().y;
         angle = body.getAngle();
+        
+        if (!gravity) {
+            body.applyForceToCenter(GameWorld.gravity.mul(-body.getMass()));
+        }
     }
     
     public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;

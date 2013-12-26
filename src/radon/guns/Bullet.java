@@ -15,8 +15,8 @@ public class Bullet extends Entity {
     public Bullet(Character c) {
         super(c.x, c.y, BodyType.DYNAMIC);
         this.c = c;
-        invMass = 0.99F;
-        restitution = 0.1F;
+        // invMass = 0.99F;
+        // restitution = 0.1F;
         gravity = true;
         col = new Color(50, 50, 50);
     }

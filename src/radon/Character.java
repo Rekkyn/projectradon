@@ -17,7 +17,7 @@ public class Character extends DynamicBox {
     
     public Character(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean physicsactive) {
         super(x, y, colourR, colourG, colourB, width, height, true);
-        restitution = 0.0F;
+        // restitution = 0.0F;
         gravity = true;
     }
     

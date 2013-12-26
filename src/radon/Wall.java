@@ -19,8 +19,6 @@ public class Wall extends Entity {
         fd.shape = ps;
         fd.density = 1.0F;
         fd.friction = 0.3F;
-        
-        physics();
     }
     
     @Override

@@ -39,7 +39,7 @@ public abstract class Gun {
             case ROCKET:
                 b = new RocketBullet(c);
                 break;
-            
+                
             default:
                 b = new Bullet(c);
         }
@@ -52,11 +52,11 @@ public abstract class Gun {
         b.velocity.set(c.velocity); // should bullets be fired with relative
         // speed to the player?
         // }
-        b.force.add(new Vector2f(force, 0));
-        b.force.setTheta(angle);
+        // b.force.add(new Vector2f(force, 0));
+        // b.force.setTheta(angle);
         Vector2f v = new Vector2f(force, 0);
         v.setTheta(180 + angle);
-        c.force.add(v);
+        // c.force.add(v);
         
         GameWorld.add(b);
     }

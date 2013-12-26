@@ -10,7 +10,7 @@ import radon.GameWorld;
 public class RocketBullet extends Bullet {
     public RocketBullet(Character c) {
         super(c);
-        invMass = 0.05F;
+        // invMass = 0.05F;
         col = new Color(112, 128, 144);
         gravity = false;
     }
@@ -22,7 +22,7 @@ public class RocketBullet extends Bullet {
         v.setTheta(prevVelocity.getTheta());
         // System.out.println(velocity.getTheta() + "     " +
         // prevVelocity.getTheta());
-        force.add(v);
+        // force.add(v);
     }
     
     @Override

@@ -10,7 +10,7 @@ public class HeavyBullet extends Bullet {
     
     public HeavyBullet(Character c) {
         super(c);
-        invMass = 0.1F;
+        // invMass = 0.1F;
         col = new Color(178, 147, 41);
     }
     
