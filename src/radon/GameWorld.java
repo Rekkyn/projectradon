@@ -96,7 +96,6 @@ public class GameWorld extends BasicGameState {
         } else {
             gunFocus = true;
         }
-        System.out.println(gravity);
         
         if (delta > 25) delta = 25;
         accumulator += delta;
@@ -112,7 +111,29 @@ public class GameWorld extends BasicGameState {
     }
     
     public void tick(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+        Input input = container.getInput();
         tickCount++;
+        
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
+            Camera.x += 4 / Camera.zoom;
+        }
+        if (input.isKeyDown(Input.KEY_LEFT)) {
+            Camera.x -= 4 / Camera.zoom;
+        }
+        if (input.isKeyDown(Input.KEY_UP)) {
+            Camera.y -= 4 / Camera.zoom;
+        }
+        if (input.isKeyDown(Input.KEY_DOWN)) {
+            Camera.y += 4 / Camera.zoom;
+        }
+        if (input.isKeyDown(Input.KEY_EQUALS)) {
+            Camera.zoom *= 1.01;
+        }
+        if (input.isKeyDown(Input.KEY_MINUS)) {
+            Camera.zoom *= 0.99;
+        }
+        Camera.update();
+        System.out.println(Camera.zoom);
         
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -145,7 +166,10 @@ public class GameWorld extends BasicGameState {
             for (Entity LOL : entities) {
                 if (db.intersects(LOL)) add = false;
             }
-            if (add) add(db);
+            if (add) {
+                add(db);
+                Camera.setFollowing(db);
+            }
         }
         while (entities.size() < 100) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 57, 90, 200,

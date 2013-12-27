@@ -61,6 +61,9 @@ public abstract class Entity {
         bd.fixedRotation = false;
         body = GameWorld.physicsWorld.createBody(bd);
         body.createFixture(fd);
+        if (!gravity) {
+            body.setGravityScale(0);
+        }
     }
     
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -74,13 +77,17 @@ public abstract class Entity {
         x = body.getPosition().x;
         y = body.getPosition().y;
         angle = body.getAngle();
-        
-        if (!gravity) {
-            body.setGravityScale(0);
-        }
     }
     
-    public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.setColor(col);
+        g.pushTransform();
+        g.setAntiAlias(true);
+        g.scale(Camera.zoom, Camera.zoom);
+        g.translate(GameWorld.partialTicks * (x - prevX) - Camera.x + Game.width / Camera.zoom / 2, GameWorld.partialTicks * (y - prevY)
+                - Camera.y + Game.height / Camera.zoom / 2);
+        g.rotate(x, y, (float) (angle * 180 / Math.PI));
+    }
     
     public void onHit() {}
     

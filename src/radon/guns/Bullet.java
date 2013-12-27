@@ -43,7 +43,6 @@ public class Bullet extends Entity {
         } else {
             velocity.scale(0.95F);
         }
-        System.out.println(velocity);
         if (onGround || Math.abs(velocity.x) < 0.01 && Math.abs(velocity.y) < 0.01) {
             velocity.x *= 0.9;
             ticksOnGround++;

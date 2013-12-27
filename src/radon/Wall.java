@@ -23,13 +23,8 @@ public class Wall extends Entity {
     
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setColor(col);
-        g.pushTransform();
-        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
-        g.scale(20, 20);
+        super.render(container, game, g);
         g.fillRect(x - width / 2, y - height / 2, width, height);
-        g.setColor(Color.black);
-        // g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
         g.popTransform();
     }
     
