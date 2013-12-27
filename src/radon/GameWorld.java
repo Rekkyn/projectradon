@@ -3,6 +3,7 @@ package radon;
 import java.util.*;
 
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.World;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -27,6 +28,8 @@ public class GameWorld extends BasicGameState {
     public static boolean gunFocus = true;
     public static Vec2 gravity = new Vec2(0F, 9.8F);
     public static Vector2f gravity1, gravity2;
+    
+    public static World physicsWorld = new World(GameWorld.gravity);
     
     public GameWorld(int play, StateBasedGame radon) {
         this.radon = radon;
@@ -67,15 +70,33 @@ public class GameWorld extends BasicGameState {
             }
             if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
                 gravity2 = new Vector2f(input.getMouseX(), input.getMouseY());
+                if (gravity2.distance(gravity1) < 10) {
+                    gravity2.set(gravity1);
+                } else if (gravity2.distance(gravity1) > 95 && gravity2.distance(gravity1) < 105) {
+                    Vector2f temp = gravity1.copy();
+                    Vector2f toAdd = new Vector2f(100, 0);
+                    toAdd.setTheta(gravity2.sub(gravity1.copy()).getTheta());
+                    temp.add(toAdd);
+                    gravity2.set(temp);
+                }
+                for (int i = 0; i < 4; i++) {
+                    Vector2f temp = gravity1.copy();
+                    Vector2f toAdd = new Vector2f(100, 0);
+                    toAdd.setTheta(i * 90);
+                    temp.add(toAdd);
+                    if (gravity2.distance(temp) < 10) gravity2.set(temp);
+                }
             }
             if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && gravity1 != null) {
-                gravity = new Vec2((gravity2.x - gravity1.x) * 0.02F, (gravity2.y - gravity1.y) * 0.02F);
+                gravity = new Vec2((gravity2.x - gravity1.x) * 0.098F, (gravity2.y - gravity1.y) * 0.098F);
+                physicsWorld.setGravity(gravity);
                 gravity1 = null;
                 gravity2 = null;
             }
         } else {
             gunFocus = true;
         }
+        System.out.println(gravity);
         
         if (delta > 25) delta = 25;
         accumulator += delta;
@@ -103,7 +124,7 @@ public class GameWorld extends BasicGameState {
             }
         }
         
-        Collision.world.step(1F / 60, 6, 3);
+        physicsWorld.step(1F / 60, 6, 3);
         
         Visibility.load(entities);
         Visibility.setLightLocation(p.x, p.y);
@@ -177,9 +198,20 @@ public class GameWorld extends BasicGameState {
         }
         g.popTransform();
         if (input.isKeyDown(Input.KEY_G)) {
-            if (gravity1 != null)
+            g.setLineWidth(2);
+            if (gravity1 != null) {
+                g.drawOval(gravity1.x - 100, gravity1.y - 100, 200, 200);
                 g.drawOval(gravity1.x - 5, gravity1.y - 5, 10, 10);
-            if (gravity2 != null) g.drawOval(gravity2.x - 5, gravity2.y - 5, 10, 10);
+                
+                g.drawOval(gravity1.x - 105, gravity1.y - 5, 10, 10);
+                g.drawOval(gravity1.x + 95, gravity1.y - 5, 10, 10);
+                g.drawOval(gravity1.x - 5, gravity1.y - 105, 10, 10);
+                g.drawOval(gravity1.x - 5, gravity1.y + 95, 10, 10);
+            }
+            if (gravity2 != null) g.fillOval(gravity2.x - 5, gravity2.y - 5, 10, 10);
+            if (gravity1 != null && gravity2 != null) {
+                g.drawLine(gravity1.x, gravity1.y, gravity2.x, gravity2.y);
+            }
         }
         
     }

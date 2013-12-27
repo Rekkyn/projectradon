@@ -59,7 +59,7 @@ public abstract class Entity {
         bd.position.set(x, y);
         bd.type = type;
         bd.fixedRotation = false;
-        body = Collision.world.createBody(bd);
+        body = GameWorld.physicsWorld.createBody(bd);
         body.createFixture(fd);
     }
     
@@ -76,7 +76,7 @@ public abstract class Entity {
         angle = body.getAngle();
         
         if (!gravity) {
-            body.applyForceToCenter(GameWorld.gravity.mul(-body.getMass()));
+            body.setGravityScale(0);
         }
     }
     
