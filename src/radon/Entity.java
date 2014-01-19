@@ -23,6 +23,7 @@ public abstract class Entity {
     Random rand = new Random();
     public boolean onGround;
     public boolean gravity = false;
+    public float restitution = 0;
     /**
      * 0 = not on wall, 1 = left wall, 2 = right wall
      */
@@ -58,7 +59,7 @@ public abstract class Entity {
         BodyDef bd = new BodyDef();
         bd.position.set(x, y);
         bd.type = type;
-        bd.fixedRotation = false;
+        bd.fixedRotation = true;
         body = GameWorld.physicsWorld.createBody(bd);
         body.createFixture(fd);
         if (!gravity) {
@@ -79,14 +80,21 @@ public abstract class Entity {
         angle = body.getAngle();
     }
     
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setColor(col);
+    public void prerender(Graphics g) {
         g.pushTransform();
         g.setAntiAlias(true);
         g.scale(Camera.zoom, Camera.zoom);
         g.translate(GameWorld.partialTicks * (x - prevX) - Camera.x + Game.width / Camera.zoom / 2, GameWorld.partialTicks * (y - prevY)
                 - Camera.y + Game.height / Camera.zoom / 2);
+    }
+    
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.setColor(col);
         g.rotate(x, y, (float) (angle * 180 / Math.PI));
+    }
+    
+    public void postrender(Graphics g) {
+        g.popTransform();
     }
     
     public void onHit() {}

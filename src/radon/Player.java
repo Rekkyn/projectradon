@@ -17,7 +17,7 @@ public class Player extends Character {
     private float gunAngle;
     
     public Player(int x, int y) {
-        super(x, y, 42, 47, 159, 20, 20, true);
+        super(x, y, 42, 47, 159, 1, 1, true);
         gravity = true;
     }
     
@@ -73,8 +73,8 @@ public class Player extends Character {
         if (input.isKeyPressed(Input.KEY_1)) selectedGun = launcher;
         if (input.isKeyPressed(Input.KEY_Q) && input.isKeyPressed(Input.KEY_Z)) selectedGun = forcefullest;
         
-        float dx = input.getMouseX() - x;
-        float dy = input.getMouseY() - y;
+        float dx = GameWorld.mousePos(container).x - x;
+        float dy = GameWorld.mousePos(container).y - y;
         gunAngle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
         
         if (shotToBeFired && fireDelay >= selectedGun.manualFireRate) {
@@ -106,12 +106,12 @@ public class Player extends Character {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         super.render(container, game, g);
-        g.pushTransform();
-        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
+        // g.translate(GameWorld.partialTicks * (x - prevX),
+        // GameWorld.partialTicks * (y - prevY));
         g.setLineWidth(3);
         g.setColor(new Color(100, 100, 100));
-        g.drawLine(x, y, x + 30 * (float) Math.cos(gunAngle * Math.PI / 180), y + 30 * (float) Math.sin(gunAngle * Math.PI / 180));
-        g.popTransform();
+        g.drawLine(x, y, x + 30 / Camera.zoom * (float) Math.cos(gunAngle * Math.PI / 180),
+                y + 30 / Camera.zoom * (float) Math.sin(gunAngle * Math.PI / 180));
     }
     
 }

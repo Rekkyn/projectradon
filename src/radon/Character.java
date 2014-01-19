@@ -1,8 +1,5 @@
 package radon;
 
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.StateBasedGame;
-
 import radon.guns.Gun;
 import radon.guns.Pistol;
 
@@ -21,9 +18,5 @@ public class Character extends DynamicBox {
         gravity = true;
     }
     
-    @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        super.render(container, game, g);
-    }
     
 }

@@ -20,6 +20,7 @@ public class DynamicBox extends Entity {
         fd.shape = ps;
         fd.density = 1.0F;
         fd.friction = 0.3F;
+        fd.restitution = restitution;
     }
     
     @Override
@@ -28,7 +29,6 @@ public class DynamicBox extends Entity {
         g.fillRect(x - width / 2, y - height / 2, width, height);
         g.setColor(Color.black);
         // g.drawLine(x, y, x + velocity.x * 10, y + velocity.y * 10);
-        g.popTransform();
     }
     
 }

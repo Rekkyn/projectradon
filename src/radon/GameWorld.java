@@ -19,7 +19,7 @@ public class GameWorld extends BasicGameState {
     public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
     
     public static float timestep = 50F / 3F; // 1/60 second
-    Player p = new Player(100, 100);
+    Player p = new Player(2, 2);
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -133,7 +133,6 @@ public class GameWorld extends BasicGameState {
             Camera.zoom *= 0.99;
         }
         Camera.update();
-        System.out.println(Camera.zoom);
         
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -145,7 +144,7 @@ public class GameWorld extends BasicGameState {
             }
         }
         
-        physicsWorld.step(1F / 60, 6, 3);
+        physicsWorld.step(1F / 60, 40, 20);
         
         Visibility.load(entities);
         Visibility.setLightLocation(p.x, p.y);
@@ -154,12 +153,13 @@ public class GameWorld extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
+        add(p);
         
         Wall w = new Wall(Game.width / 40, Game.height / 20, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
         
-        while (entities.size() < 50) {
+        while (entities.size() < 25) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 42, 47, 159,
                     rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
             boolean add = true;
@@ -168,10 +168,10 @@ public class GameWorld extends BasicGameState {
             }
             if (add) {
                 add(db);
-                Camera.setFollowing(db);
+                // Camera.setFollowing(db);
             }
         }
-        while (entities.size() < 100) {
+        while (entities.size() < 50) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 57, 90, 200,
                     rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
             boolean add = true;
@@ -194,7 +194,9 @@ public class GameWorld extends BasicGameState {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             
+            e.prerender(g);
             e.render(container, game, g);
+            e.postrender(g);
         }
         
         g.setColor(new Color(0, 0, 0));
@@ -248,6 +250,14 @@ public class GameWorld extends BasicGameState {
     
     public static List<Entity> getEntities() {
         return entities;
+    }
+    
+    public static Vec2 mousePos(GameContainer container) {
+        Input input = container.getInput();
+        System.out.println(new Vec2(input.getMouseX() / Camera.zoom + Camera.x + Game.width / Camera.zoom / 2, input.getMouseY()
+                / Camera.zoom + Camera.y + Game.height / Camera.zoom / 2));
+        return new Vec2(input.getMouseX() / Camera.zoom - Camera.x + Game.width / Camera.zoom / 2, input.getMouseY() / Camera.zoom
+                - Camera.y + Game.height / Camera.zoom / 2);
     }
     
     @Override
