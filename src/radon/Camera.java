@@ -2,8 +2,8 @@ package radon;
 
 public class Camera {
     public static float zoom = 20;
-    public static float x = Game.width / zoom / 2;
-    public static float y = Game.height / zoom / 2;
+    public static float x = 0;
+    public static float y = 0;
     public static Entity following;
     
     public static void setFollowing(Entity e) {

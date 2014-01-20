@@ -108,10 +108,10 @@ public class Player extends Character {
         super.render(container, game, g);
         // g.translate(GameWorld.partialTicks * (x - prevX),
         // GameWorld.partialTicks * (y - prevY));
-        g.setLineWidth(3);
+        g.setLineWidth(3F / 20F * Camera.zoom);
+        System.out.println(Camera.zoom);
         g.setColor(new Color(100, 100, 100));
-        g.drawLine(x, y, x + 30 / Camera.zoom * (float) Math.cos(gunAngle * Math.PI / 180),
-                y + 30 / Camera.zoom * (float) Math.sin(gunAngle * Math.PI / 180));
+        g.drawLine(x, -y, x + 1.5F * (float) Math.cos(gunAngle * Math.PI / 180), -y - 1.5F * (float) Math.sin(gunAngle * Math.PI / 180));
     }
     
 }

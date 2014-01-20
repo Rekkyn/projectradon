@@ -243,7 +243,7 @@ public class Visibility {
             output.add(0, pBegin);
         }
         output.add(0, pEnd);
-        outputColours.add(0, segment.col);
+        // outputColours.add(0, segment.col);
     }
     
     public static Vector2f lineIntersection(Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4) {

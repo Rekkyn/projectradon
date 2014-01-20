@@ -19,14 +19,14 @@ public class GameWorld extends BasicGameState {
     public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
     
     public static float timestep = 50F / 3F; // 1/60 second
-    Player p = new Player(2, 2);
+    Player p = new Player(0, 0);
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
     public static Random rand = new Random();
     
     public static boolean gunFocus = true;
-    public static Vec2 gravity = new Vec2(0F, 9.8F);
+    public static Vec2 gravity = new Vec2(0F, -9.8F);
     public static Vector2f gravity1, gravity2;
     
     public static World physicsWorld = new World(GameWorld.gravity);
@@ -121,10 +121,10 @@ public class GameWorld extends BasicGameState {
             Camera.x -= 4 / Camera.zoom;
         }
         if (input.isKeyDown(Input.KEY_UP)) {
-            Camera.y -= 4 / Camera.zoom;
+            Camera.y += 4 / Camera.zoom;
         }
         if (input.isKeyDown(Input.KEY_DOWN)) {
-            Camera.y += 4 / Camera.zoom;
+            Camera.y -= 4 / Camera.zoom;
         }
         if (input.isKeyDown(Input.KEY_EQUALS)) {
             Camera.zoom *= 1.01;
@@ -155,12 +155,14 @@ public class GameWorld extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         add(p);
         
-        Wall w = new Wall(Game.width / 40, Game.height / 20, 242, 224, 42, Game.width / 20, 0.5F);
+        Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
         
         while (entities.size() < 25) {
-            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 42, 47, 159,
+            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
+                    - Game.height / 40, 42,
+                    47, 159,
                     rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
             boolean add = true;
             for (Entity LOL : entities) {
@@ -172,7 +174,8 @@ public class GameWorld extends BasicGameState {
             }
         }
         while (entities.size() < 50) {
-            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20, rand.nextFloat() * Game.height / 20, 57, 90, 200,
+            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
+                    - Game.height / 40, 57, 90, 200,
                     rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
             boolean add = true;
             for (Entity LOL : entities) {
@@ -254,10 +257,8 @@ public class GameWorld extends BasicGameState {
     
     public static Vec2 mousePos(GameContainer container) {
         Input input = container.getInput();
-        System.out.println(new Vec2(input.getMouseX() / Camera.zoom + Camera.x + Game.width / Camera.zoom / 2, input.getMouseY()
-                / Camera.zoom + Camera.y + Game.height / Camera.zoom / 2));
-        return new Vec2(input.getMouseX() / Camera.zoom - Camera.x + Game.width / Camera.zoom / 2, input.getMouseY() / Camera.zoom
-                - Camera.y + Game.height / Camera.zoom / 2);
+        return new Vec2(Camera.x - Game.width / 2 / Camera.zoom + input.getMouseX() / Camera.zoom, Camera.y + Game.height / 2 / Camera.zoom
+                - input.getMouseY() / Camera.zoom);
     }
     
     @Override

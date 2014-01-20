@@ -84,8 +84,8 @@ public abstract class Entity {
         g.pushTransform();
         g.setAntiAlias(true);
         g.scale(Camera.zoom, Camera.zoom);
-        g.translate(GameWorld.partialTicks * (x - prevX) - Camera.x + Game.width / Camera.zoom / 2, GameWorld.partialTicks * (y - prevY)
-                - Camera.y + Game.height / Camera.zoom / 2);
+        g.translate(GameWorld.partialTicks * (x - prevX) - Camera.x + Game.width / Camera.zoom / 2, GameWorld.partialTicks * (prevY - y)
+                + Camera.y + Game.height / Camera.zoom / 2);
     }
     
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
