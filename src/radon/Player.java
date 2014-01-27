@@ -27,44 +27,18 @@ public class Player extends Character {
         
         input = container.getInput();
         if (input.isKeyPressed(Input.KEY_SPACE)) {
-            if (onGround) {
-                velocity.y = -6;
-            } else if (onWall == 1) {
-                velocity.set(0, -6).setTheta(-60);
-                walljumpCooldown = 13;
-            } else if (onWall == 2) {
-                velocity.set(0, -6).setTheta(-120);
-                walljumpCooldown = 13;
-            }
+            jump();
         }
         
         walljumpCooldown--;
         if (walljumpCooldown < 0) walljumpCooldown = 0;
         
         if (input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_D)) {
-            if (onGround) {
-                velocity.x = -walkSpeed;
-            } else if (velocity.x >= -walkSpeed / 2.5F && walljumpCooldown == 0) {
-                velocity.x = -walkSpeed / 2.5F;
-            }
-            if (onWall == 1 && walljumpCooldown == 0 && velocity.y > 0) {
-                velocity.x = 0;
-                velocity.y *= 0.9;
-            }
+            move(MoveState.LEFT);
         } else if (input.isKeyDown(Input.KEY_D) && !input.isKeyDown(Input.KEY_A)) {
-            if (onGround) {
-                velocity.x = walkSpeed;
-            } else if (velocity.x <= walkSpeed / 2.5F && walljumpCooldown == 0) {
-                velocity.x = walkSpeed / 2.5F;
-            }
-            if (onWall == 2 && walljumpCooldown == 0 && velocity.y > 0) {
-                velocity.x = 0;
-                velocity.y *= 0.9;
-            }
+            move(MoveState.RIGHT);
         } else {
-            if (onGround) {
-                velocity.x = 0;
-            }
+            move(MoveState.STOP);
         }
         
         if (input.isKeyPressed(Input.KEY_2)) selectedGun = pistol;
@@ -109,7 +83,6 @@ public class Player extends Character {
         // g.translate(GameWorld.partialTicks * (x - prevX),
         // GameWorld.partialTicks * (y - prevY));
         g.setLineWidth(3F / 20F * Camera.zoom);
-        System.out.println(Camera.zoom);
         g.setColor(new Color(100, 100, 100));
         g.drawLine(x, -y, x + 1.5F * (float) Math.cos(gunAngle * Math.PI / 180), -y - 1.5F * (float) Math.sin(gunAngle * Math.PI / 180));
     }

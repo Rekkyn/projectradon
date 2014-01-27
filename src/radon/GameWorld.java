@@ -19,7 +19,7 @@ public class GameWorld extends BasicGameState {
     public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
     
     public static float timestep = 50F / 3F; // 1/60 second
-    Player p = new Player(0, 0);
+    Player p = new Player(0, 20);
     
     public static List<Entity> entities = new ArrayList<Entity>();
     

@@ -4,8 +4,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-import radon.*;
 import radon.Character;
+import radon.Entity;
 
 public class Bullet extends Entity {
     public int ticksOnGround = 0;
@@ -23,15 +23,6 @@ public class Bullet extends Entity {
     
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.pushTransform();
-        g.translate(GameWorld.partialTicks * (x - prevX), GameWorld.partialTicks * (y - prevY));
-        g.setColor(col);
-        float xRotate = x;
-        float yRotate = y;
-        g.rotate(xRotate, yRotate, (float) velocity.getTheta());
-        g.fillRect(x - 2, y - 1, 4, 2);
-        g.rotate(xRotate, yRotate, (float) -velocity.getTheta());
-        g.popTransform();
     }
     
     @Override
@@ -39,9 +30,9 @@ public class Bullet extends Entity {
         super.update(container, game, delta);
         
         if (!hit) {
-            velocity.scale(0.99F);
+            // air resistance 0.99
         } else {
-            velocity.scale(0.95F);
+            // air resistance 0.95
         }
         if (onGround || Math.abs(velocity.x) < 0.01 && Math.abs(velocity.y) < 0.01) {
             velocity.x *= 0.9;

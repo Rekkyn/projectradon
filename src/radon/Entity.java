@@ -2,6 +2,7 @@ package radon;
 
 import java.util.Random;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,7 +14,7 @@ public abstract class Entity {
     public float x, y;
     public float angle;
     public float prevX, prevY;
-    public Vector2f velocity;
+    public Vec2 velocity;
     public Vector2f prevVelocity;
     public boolean removed;
     public long ticksExisted = 0;
@@ -59,7 +60,7 @@ public abstract class Entity {
         BodyDef bd = new BodyDef();
         bd.position.set(x, y);
         bd.type = type;
-        bd.fixedRotation = true;
+        bd.fixedRotation = false;
         body = GameWorld.physicsWorld.createBody(bd);
         body.createFixture(fd);
         if (!gravity) {
@@ -78,6 +79,7 @@ public abstract class Entity {
         x = body.getPosition().x;
         y = body.getPosition().y;
         angle = body.getAngle();
+        velocity = body.getLinearVelocity();
     }
     
     public void prerender(Graphics g) {
@@ -90,7 +92,7 @@ public abstract class Entity {
     
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(col);
-        g.rotate(x, y, (float) (angle * 180 / Math.PI));
+        g.rotate(x, -y, (float) (-angle * 180 / Math.PI));
     }
     
     public void postrender(Graphics g) {
