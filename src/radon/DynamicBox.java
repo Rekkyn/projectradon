@@ -13,14 +13,18 @@ public class DynamicBox extends Entity {
         this.width = width;
         this.height = height;
         this.gravity = gravity;
+    }
+    
+    @Override
+    public void init() {
+        super.init();
         
         PolygonShape ps = new PolygonShape();
         ps.setAsBox(width / 2, height / 2);
-        
-        fd.shape = ps;
-        fd.density = 1.0F;
-        fd.friction = 0.3F;
-        fd.restitution = restitution;
+        fixture = body.createFixture(ps, 1);
+        fixture.setFriction(0.3F);
+        fixture.setDensity(5);
+        fixture.setRestitution(restitution);
     }
     
     @Override

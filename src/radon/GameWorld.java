@@ -153,17 +153,17 @@ public class GameWorld extends BasicGameState {
     
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
+        PlayerContactListener contlist = new PlayerContactListener();
+        physicsWorld.setContactListener(contlist);
+        
         add(p);
         
         Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
-        
         while (entities.size() < 25) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
-                    - Game.height / 40, 42,
-                    47, 159,
-                    rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
+                    - Game.height / 40, 42, 47, 159, rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
             boolean add = true;
             for (Entity LOL : entities) {
                 if (db.intersects(LOL)) add = false;
@@ -175,15 +175,13 @@ public class GameWorld extends BasicGameState {
         }
         while (entities.size() < 50) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
-                    - Game.height / 40, 57, 90, 200,
-                    rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
+                    - Game.height / 40, 57, 90, 200, rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
             boolean add = true;
             for (Entity LOL : entities) {
                 if (db.intersects(LOL)) add = false;
             }
             if (add) add(db);
         }
-        
         
     }
     

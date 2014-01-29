@@ -6,11 +6,9 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-/**
- * Created by James Ward (epic_jdog)
+/** Created by James Ward (epic_jdog)
  * <p/>
- * Date: 13/12/13 Time: 9:05 PM
- */
+ * Date: 13/12/13 Time: 9:05 PM */
 public class Menu extends BasicGameState {
     float accumulator = 0.0F;
     public static long tickCount = 0;

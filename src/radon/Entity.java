@@ -22,19 +22,18 @@ public abstract class Entity {
     public Color col = new Color(0, 0, 0);
     Input input;
     Random rand = new Random();
-    public boolean onGround;
     public boolean gravity = false;
     public float restitution = 0;
-    /**
-     * 0 = not on wall, 1 = left wall, 2 = right wall
-     */
+    /** 0 = not on wall, 1 = left wall, 2 = right wall */
     public byte onWall;
     
-    FixtureDef fd = new FixtureDef();
+    Fixture fixture;
     Body body;
     BodyType type;
+    BodyDef def;
     
     public GameWorld world;
+    public static World physicsWorld;
     
     public Entity(float x, float y, BodyType type) {
         this.x = x;
@@ -57,12 +56,12 @@ public abstract class Entity {
     }
     
     public void init() {
-        BodyDef bd = new BodyDef();
-        bd.position.set(x, y);
-        bd.type = type;
-        bd.fixedRotation = false;
-        body = GameWorld.physicsWorld.createBody(bd);
-        body.createFixture(fd);
+        physicsWorld = GameWorld.physicsWorld;
+        def = new BodyDef();
+        def.position.set(x, y);
+        def.angle = (float) Math.toRadians(angle);
+        def.type = type;
+        body = GameWorld.physicsWorld.createBody(def);
         if (!gravity) {
             body.setGravityScale(0);
         }

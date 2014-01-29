@@ -13,12 +13,17 @@ public class Wall extends Entity {
         this.width = width;
         this.height = height;
         
+    }
+    
+    @Override
+    public void init() {
+        super.init();
+        
         PolygonShape ps = new PolygonShape();
         ps.setAsBox(width / 2, height / 2);
-        
-        fd.shape = ps;
-        fd.density = 1.0F;
-        fd.friction = 0.3F;
+        fixture = body.createFixture(ps, 1);
+        fixture.setFriction(0.3F);
+        fixture.setRestitution(restitution);
     }
     
     @Override

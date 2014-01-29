@@ -22,8 +22,7 @@ public class Bullet extends Entity {
     }
     
     @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-    }
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {}
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -34,7 +33,7 @@ public class Bullet extends Entity {
         } else {
             // air resistance 0.95
         }
-        if (onGround || Math.abs(velocity.x) < 0.01 && Math.abs(velocity.y) < 0.01) {
+        if (/*onGround ||*/Math.abs(velocity.x) < 0.01 && Math.abs(velocity.y) < 0.01) {
             velocity.x *= 0.9;
             ticksOnGround++;
         }

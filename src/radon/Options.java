@@ -2,11 +2,9 @@ package radon;
 
 import org.newdawn.slick.SlickException;
 
-/**
- * Created by James Ward (epic_jdog)
+/** Created by James Ward (epic_jdog)
  * <p/>
- * Date: 13/12/13 Time: 10:06 PM
- */
+ * Date: 13/12/13 Time: 10:06 PM */
 public class Options {
     boolean visibility = false;
     static int timescale = 2;

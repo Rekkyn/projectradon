@@ -39,7 +39,7 @@ public abstract class Gun {
             case ROCKET:
                 b = new RocketBullet(c);
                 break;
-                
+            
             default:
                 b = new Bullet(c);
         }

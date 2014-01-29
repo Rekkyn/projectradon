@@ -25,8 +25,7 @@ public class RocketBullet extends Bullet {
     }
     
     @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-    }
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {}
     
     @Override
     public void onHit() {
