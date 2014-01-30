@@ -19,7 +19,7 @@ public class GameWorld extends BasicGameState {
     public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
     
     public static float timestep = 50F / 3F; // 1/60 second
-    Player p = new Player(0, 20);
+    Player p = new Player(0, -14);
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -161,21 +161,9 @@ public class GameWorld extends BasicGameState {
         Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
-        while (entities.size() < 25) {
-            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
-                    - Game.height / 40, 42, 47, 159, rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, true);
-            boolean add = true;
-            for (Entity LOL : entities) {
-                if (db.intersects(LOL)) add = false;
-            }
-            if (add) {
-                add(db);
-                // Camera.setFollowing(db);
-            }
-        }
-        while (entities.size() < 50) {
-            DynamicBox db = new DynamicBox(rand.nextFloat() * Game.width / 20 - Game.width / 40, rand.nextFloat() * Game.height / 20
-                    - Game.height / 40, 57, 90, 200, rand.nextFloat() * 5 + 1, rand.nextFloat() * 5 + 1, false);
+        while (entities.size() < 150) {
+            DynamicBox db = new DynamicBox(rand.nextFloat() * 80 - 40, rand.nextFloat() * 80 - 40, 57, 90, 200, rand.nextFloat() * 5 + 1,
+                    rand.nextFloat() * 5 + 1, false);
             boolean add = true;
             for (Entity LOL : entities) {
                 if (db.intersects(LOL)) add = false;

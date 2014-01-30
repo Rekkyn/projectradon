@@ -23,7 +23,7 @@ public class DynamicBox extends Entity {
         ps.setAsBox(width / 2, height / 2);
         fixture = body.createFixture(ps, 1);
         fixture.setFriction(0.3F);
-        fixture.setDensity(5);
+        fixture.setDensity(100);
         fixture.setRestitution(restitution);
     }
     

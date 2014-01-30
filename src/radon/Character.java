@@ -14,7 +14,7 @@ import radon.guns.Pistol;
 
 public class Character extends Entity {
     
-    public float walkSpeed = 5.0F;
+    public float walkSpeed = 7.0F;
     public int walljumpCooldown = 0;
     private Pistol pistol = new Pistol(this);
     public Gun selectedGun = pistol;
@@ -22,6 +22,9 @@ public class Character extends Entity {
     public boolean shotToBeFired = false;
     public int numContacts;
     public boolean onGround;
+    public boolean leftWall;
+    public boolean rightWall;
+    public int wallcooldown;
     public List<Float> contactAngles = new ArrayList<Float>();
     public List<Float> groundAngles = new ArrayList<Float>();
     
@@ -43,30 +46,40 @@ public class Character extends Entity {
         body.setFixedRotation(true);
         body.setUserData(this);
         
-        fixture.setFriction(0);
+        fixture.setFriction(0.2F);
     }
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
         
-        onGround = onGround();
+        checkCollisions();
+        System.out.println(wallcooldown);
         contactAngles.clear();
     }
     
-    public boolean onGround() {
+    public void checkCollisions() {
         groundAngles.clear();
+        boolean groundtemp = false;
+        boolean lefttemp = false;
+        boolean righttemp = false;
         if (numContacts > 0) {
-            boolean result = false;
             for (float angle : contactAngles) {
-                if (angle < 90 + 60 && angle > 90 - 60) {
+                if (angle < 150 && angle > 30) {
                     groundAngles.add(angle);
-                    result = true;
+                    groundtemp = true;
+                }
+                if (angle > -30 && angle < 30) {
+                    lefttemp = true;
+                }
+                if (angle > 150 || angle < -150) {
+                    righttemp = true;
                 }
             }
-            return result;
         }
-        return false;
+        onGround = groundtemp;
+        leftWall = lefttemp;
+        rightWall = righttemp;
     }
     
     public void move(MoveState state) {
@@ -92,30 +105,51 @@ public class Character extends Entity {
             Vec2 impulsevec = new Vec2(impulse * (float) Math.sin(Math.toRadians(groundAngles.get(0))), impulse
                     * (float) -Math.cos(Math.toRadians(groundAngles.get(0))));
             body.applyLinearImpulse(impulsevec, body.getWorldCenter());
-            System.out.println(impulsevec);
         } else {
             float speed;
-            if (numContacts == 0) {
-                speed = walkSpeed / 2F;
-            } else {
-                speed = walkSpeed / 10F;
-            }
+            speed = walkSpeed / 2F;
+            body.setLinearDamping(0F);
             switch (state) {
                 case LEFT:
-                    if (velocity.x >= -speed) {
-                        desiredVel = velocity.x - change > -speed ? velocity.x - change : -speed;
-                    } else {
-                        desiredVel = velocity.x;
+                    if (leftWall) {
+                        if (velocity.y > 0) {
+                            break;
+                        } else {
+                            body.setLinearDamping(5F);
+                        }
+                    }
+                    if (rightWall) {
+                        wallcooldown++;
+                    }
+                    if (!rightWall && !leftWall || rightWall && wallcooldown > 10) {
+                        if (velocity.x >= -speed) {
+                            desiredVel = velocity.x - change > -speed ? velocity.x - change : -speed;
+                        } else {
+                            desiredVel = velocity.x;
+                        }
                     }
                     break;
                 case STOP:
                     desiredVel = velocity.x;
+                    wallcooldown = 0;
                     break;
                 case RIGHT:
-                    if (velocity.x <= speed) {
-                        desiredVel = velocity.x + change < speed ? velocity.x + change : speed;
-                    } else {
-                        desiredVel = velocity.x;
+                    if (rightWall) {
+                        if (velocity.y > 0) {
+                            break;
+                        } else {
+                            body.setLinearDamping(5F);
+                        }
+                    }
+                    if (leftWall) {
+                        wallcooldown++;
+                    }
+                    if (!rightWall && !leftWall || leftWall && wallcooldown > 10) {
+                        if (velocity.x <= speed) {
+                            desiredVel = velocity.x + change < speed ? velocity.x + change : speed;
+                        } else {
+                            desiredVel = velocity.x;
+                        }
                     }
                     break;
             }
@@ -126,7 +160,22 @@ public class Character extends Entity {
     }
     
     public void jump() {
-        if (onGround) body.applyLinearImpulse(new Vec2(0, 10), body.getWorldCenter());
+        if (onGround) {
+            body.applyLinearImpulse(new Vec2(0, 10), body.getWorldCenter());
+        } else if (leftWall && rightWall) {
+            // TODO: this
+        } else if (leftWall) {
+            // body.setLinearVelocity(new Vec2(0, 0)); // TODO: this?
+            body.applyLinearImpulse(
+                    new Vec2(body.getMass() * 10 * (float) Math.cos(Math.PI / 3), body.getMass() * 10 * (float) Math.sin(Math.PI / 3)),
+                    body.getWorldCenter());
+        } else if (rightWall) {
+            body.setLinearVelocity(new Vec2(0, 0));
+            body.applyLinearImpulse(
+                    new Vec2(body.getMass() * 10 * (float) Math.cos(2 * Math.PI / 3), body.getMass() * 10
+                            * (float) Math.sin(2 * Math.PI / 3)),
+                            body.getWorldCenter());
+        }
     }
     
     public enum MoveState {
