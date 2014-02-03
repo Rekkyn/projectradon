@@ -19,7 +19,7 @@ public class GameWorld extends BasicGameState {
     public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
     
     public static float timestep = 50F / 3F; // 1/60 second
-    Player p = new Player(0, -14);
+    Player p = new Player(0, 20);
     
     public static List<Entity> entities = new ArrayList<Entity>();
     
@@ -163,7 +163,7 @@ public class GameWorld extends BasicGameState {
         
         while (entities.size() < 150) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * 80 - 40, rand.nextFloat() * 80 - 40, 57, 90, 200, rand.nextFloat() * 5 + 1,
-                    rand.nextFloat() * 5 + 1, false);
+                    rand.nextFloat() * 5 + 1, true);
             boolean add = true;
             for (Entity LOL : entities) {
                 if (db.intersects(LOL)) add = false;

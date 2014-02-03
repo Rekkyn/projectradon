@@ -15,7 +15,6 @@ import radon.guns.Pistol;
 public class Character extends Entity {
     
     public float walkSpeed = 7.0F;
-    public int walljumpCooldown = 0;
     private Pistol pistol = new Pistol(this);
     public Gun selectedGun = pistol;
     public int fireDelay = selectedGun.autoFireRate;
@@ -25,8 +24,10 @@ public class Character extends Entity {
     public boolean leftWall;
     public boolean rightWall;
     public int wallcooldown;
+    public int walljumpCooldown;
     public List<Float> contactAngles = new ArrayList<Float>();
     public List<Float> groundAngles = new ArrayList<Float>();
+    public float gunAngle;
     
     public Character(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean physicsactive) {
         super(x, y, BodyType.DYNAMIC);
@@ -54,7 +55,9 @@ public class Character extends Entity {
         super.update(container, game, delta);
         
         checkCollisions();
-        System.out.println(wallcooldown);
+        walljumpCooldown--;
+        if (walljumpCooldown < 0) walljumpCooldown = 0;
+        
         contactAngles.clear();
     }
     
@@ -122,7 +125,7 @@ public class Character extends Entity {
                         wallcooldown++;
                     }
                     if (!rightWall && !leftWall || rightWall && wallcooldown > 10) {
-                        if (velocity.x >= -speed) {
+                        if (velocity.x >= -speed && walljumpCooldown == 0) {
                             desiredVel = velocity.x - change > -speed ? velocity.x - change : -speed;
                         } else {
                             desiredVel = velocity.x;
@@ -145,7 +148,7 @@ public class Character extends Entity {
                         wallcooldown++;
                     }
                     if (!rightWall && !leftWall || leftWall && wallcooldown > 10) {
-                        if (velocity.x <= speed) {
+                        if (velocity.x <= speed && walljumpCooldown == 0) {
                             desiredVel = velocity.x + change < speed ? velocity.x + change : speed;
                         } else {
                             desiredVel = velocity.x;
@@ -165,16 +168,22 @@ public class Character extends Entity {
         } else if (leftWall && rightWall) {
             // TODO: this
         } else if (leftWall) {
-            // body.setLinearVelocity(new Vec2(0, 0)); // TODO: this?
+            body.setLinearVelocity(new Vec2(0, 0)); // TODO: this?
             body.applyLinearImpulse(
                     new Vec2(body.getMass() * 10 * (float) Math.cos(Math.PI / 3), body.getMass() * 10 * (float) Math.sin(Math.PI / 3)),
                     body.getWorldCenter());
+            body.setTransform(new Vec2(x + 0.01F, y), 0);
+            walljumpCooldown = 13;
+            wallcooldown = 11;
         } else if (rightWall) {
             body.setLinearVelocity(new Vec2(0, 0));
             body.applyLinearImpulse(
                     new Vec2(body.getMass() * 10 * (float) Math.cos(2 * Math.PI / 3), body.getMass() * 10
                             * (float) Math.sin(2 * Math.PI / 3)),
                             body.getWorldCenter());
+            body.setTransform(new Vec2(x - 0.01F, y), 0);
+            walljumpCooldown = 13;
+            wallcooldown = 11;
         }
     }
     

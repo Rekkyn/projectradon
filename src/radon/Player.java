@@ -7,14 +7,11 @@ import radon.guns.*;
 
 public class Player extends Character {
     
-    public float walkSpeed = 3.0F;
-    public int walljumpCooldown = 0;
     private Pistol pistol = new Pistol(this);
     private RocketLauncher launcher = new RocketLauncher(this);
     private Shotgun shotgun = new Shotgun(this);
     private ForcefulNature fan = new ForcefulNature(this);
     private ForcefulleristNature forcefullest = new ForcefulleristNature(this);
-    private float gunAngle;
     
     public Player(int x, int y) {
         super(x, y, 42, 47, 159, 1, 1, true);
@@ -26,12 +23,6 @@ public class Player extends Character {
         super.update(container, game, delta);
         
         input = container.getInput();
-        if (input.isKeyPressed(Input.KEY_SPACE)) {
-            jump();
-        }
-        
-        walljumpCooldown--;
-        if (walljumpCooldown < 0) walljumpCooldown = 0;
         
         if (input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_D)) {
             move(MoveState.LEFT);
@@ -39,6 +30,10 @@ public class Player extends Character {
             move(MoveState.RIGHT);
         } else {
             move(MoveState.STOP);
+        }
+        
+        if (input.isKeyPressed(Input.KEY_SPACE)) {
+            jump();
         }
         
         if (input.isKeyPressed(Input.KEY_2)) selectedGun = pistol;
