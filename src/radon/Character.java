@@ -9,6 +9,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.GameWorld.Filtering;
 import radon.guns.Gun;
 import radon.guns.Pistol;
 
@@ -29,9 +30,9 @@ public class Character extends Entity {
     public List<Float> groundAngles = new ArrayList<Float>();
     public float gunAngle;
     
-    public Character(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean physicsactive) {
+    public Character(float x, float y, boolean physicsactive) {
         super(x, y, BodyType.DYNAMIC);
-        // restitution = 0.0F;
+        restitution = 0.0F;
         gravity = true;
     }
     
@@ -42,12 +43,14 @@ public class Character extends Entity {
         CircleShape circle = new CircleShape();
         circle.setRadius(0.5f);
         fixture = body.createFixture(circle, 0);
+        fixture.setFriction(0.2F);
         
         body.setBullet(true);
         body.setFixedRotation(true);
         body.setUserData(this);
-        
-        fixture.setFriction(0.2F);
+        fixture.setRestitution(restitution);
+        fixture.m_filter.categoryBits = Filtering.PLAYER;
+        fixture.m_filter.maskBits = Filtering.GROUND;
     }
     
     @Override

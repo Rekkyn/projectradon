@@ -6,7 +6,7 @@ public class Pistol extends Gun {
     
     public static final int autoFireRate = 20;
     public static final int manualFireRate = 7;
-    public static final float bulletForce = 20;
+    public static final float bulletForce = 0.5F;
     
     public Pistol(Character character) {
         super(character, autoFireRate, manualFireRate);

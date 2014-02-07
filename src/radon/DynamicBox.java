@@ -5,6 +5,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.GameWorld.Filtering;
+
 public class DynamicBox extends Entity {
     
     public DynamicBox(float x, float y, int colourR, int colourG, int colourB, float width, float height, boolean gravity) {
@@ -13,6 +15,7 @@ public class DynamicBox extends Entity {
         this.width = width;
         this.height = height;
         this.gravity = gravity;
+        restitution = 0.0F;
     }
     
     @Override
@@ -23,8 +26,10 @@ public class DynamicBox extends Entity {
         ps.setAsBox(width / 2, height / 2);
         fixture = body.createFixture(ps, 1);
         fixture.setFriction(0.3F);
-        fixture.setDensity(100);
+        fixture.setDensity(20);
         fixture.setRestitution(restitution);
+        fixture.m_filter.categoryBits = Filtering.GROUND;
+        fixture.m_filter.maskBits = Filtering.GROUND | Filtering.PLAYER | Filtering.BULLET;
     }
     
     @Override

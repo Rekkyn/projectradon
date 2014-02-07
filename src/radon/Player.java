@@ -14,7 +14,7 @@ public class Player extends Character {
     private ForcefulleristNature forcefullest = new ForcefulleristNature(this);
     
     public Player(int x, int y) {
-        super(x, y, 42, 47, 159, 1, 1, true);
+        super(x, y, true);
         gravity = true;
     }
     

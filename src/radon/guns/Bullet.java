@@ -1,11 +1,13 @@
 package radon.guns;
 
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
+import radon.*;
+import radon.GameWorld.Filtering;
 import radon.Character;
-import radon.Entity;
 
 public class Bullet extends Entity {
     public int ticksOnGround = 0;
@@ -15,14 +17,34 @@ public class Bullet extends Entity {
     public Bullet(Character c) {
         super(c.x, c.y, BodyType.DYNAMIC);
         this.c = c;
-        // invMass = 0.99F;
-        // restitution = 0.1F;
         gravity = true;
         col = new Color(50, 50, 50);
+        restitution = 0.1F;
     }
     
     @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {}
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        // super.render(container, game, g);
+        g.setColor(col);
+        g.fillOval(x - 0.1F, -y - 0.1F, 0.2F, 0.2F);
+    }
+    
+    @Override
+    public void init() {
+        super.init();
+        
+        CircleShape circle = new CircleShape();
+        circle.setRadius(0.1f);
+        fixture = body.createFixture(circle, 0);
+        fixture.setFriction(0.2F);
+        fixture.setDensity(0.5F);
+        
+        body.setBullet(true);
+        body.setFixedRotation(true);
+        fixture.setRestitution(restitution);
+        fixture.m_filter.categoryBits = Filtering.BULLET;
+        fixture.m_filter.maskBits = Filtering.GROUND | Filtering.BULLET;
+    }
     
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -42,11 +64,6 @@ public class Bullet extends Entity {
             col.a = 1F - (ticksOnGround - 60F) / 60F;
         }
         if (ticksOnGround > 120) remove();
-    }
-    
-    @Override
-    public void onHit() {
-        hit = true;
     }
     
 }

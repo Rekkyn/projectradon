@@ -18,7 +18,7 @@ public class RocketBullet extends Bullet {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
         Vector2f v = new Vector2f(20, 0);
-        v.setTheta(prevVelocity.getTheta());
+        // v.setTheta(prevVelocity.getTheta());
         // System.out.println(velocity.getTheta() + "     " +
         // prevVelocity.getTheta());
         // force.add(v);

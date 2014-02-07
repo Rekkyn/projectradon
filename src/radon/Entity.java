@@ -23,14 +23,14 @@ public abstract class Entity {
     Input input;
     Random rand = new Random();
     public boolean gravity = false;
-    public float restitution = 0;
+    public float restitution;
     /** 0 = not on wall, 1 = left wall, 2 = right wall */
     public byte onWall;
     
-    Fixture fixture;
-    Body body;
-    BodyType type;
-    BodyDef def;
+    public Fixture fixture;
+    public Body body;
+    public BodyType type;
+    public BodyDef def;
     
     public GameWorld world;
     public static World physicsWorld;
@@ -43,6 +43,7 @@ public abstract class Entity {
     
     public void remove() {
         removed = true;
+        physicsWorld.destroyBody(body);
     }
     
     public boolean intersects(Entity e) {
