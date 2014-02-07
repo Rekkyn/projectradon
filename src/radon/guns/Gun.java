@@ -15,15 +15,17 @@ public abstract class Gun {
     
     public int autoFireRate;
     public int manualFireRate;
+    public float bulletSpread = 0;
+    public float maxSpread;
+    public float minSpread;
+    public float bulletForce;
     
     public enum BulletType {
         NORMAL, HEAVY, ROCKET
     }
     
-    public Gun(Character character, int autoFireRate, int manualFireRate) {
+    public Gun(Character character) {
         c = character;
-        this.autoFireRate = autoFireRate;
-        this.manualFireRate = manualFireRate;
     }
     
     public abstract void fireAuto(float angle);
@@ -52,6 +54,14 @@ public abstract class Gun {
                 new Vec2(-force * (float) Math.cos(angle * Math.PI / 180), -force * (float) Math.sin(angle * Math.PI / 180)),
                 b.body.getWorldCenter());
         
+    }
+    
+    public void calculateSpread(int fireDelay) {
+        if (autoFireRate == 0 || fireDelay >= autoFireRate) {
+            bulletSpread = minSpread;
+        } else {
+            bulletSpread = (fireDelay - manualFireRate) * (maxSpread - minSpread) / (manualFireRate - autoFireRate) + maxSpread;
+        }
     }
     
 }

@@ -9,7 +9,7 @@ public class ForcefulleristNature extends Gun {
     public static final float bulletForce = 200;
     
     public ForcefulleristNature(Player p) {
-        super(p, autoFireRate, manualFireRate);
+        super(p);
     }
     
     @Override

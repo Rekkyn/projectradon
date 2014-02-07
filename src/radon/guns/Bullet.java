@@ -41,6 +41,7 @@ public class Bullet extends Entity {
         
         body.setBullet(true);
         body.setFixedRotation(true);
+        body.setLinearDamping(0.2F);
         fixture.setRestitution(restitution);
         fixture.m_filter.categoryBits = Filtering.BULLET;
         fixture.m_filter.maskBits = Filtering.GROUND | Filtering.BULLET;

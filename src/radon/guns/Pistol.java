@@ -4,27 +4,22 @@ import radon.Character;
 
 public class Pistol extends Gun {
     
-    public static final int autoFireRate = 20;
-    public static final int manualFireRate = 7;
-    public static final float bulletForce = 0.5F;
-    
     public Pistol(Character character) {
-        super(character, autoFireRate, manualFireRate);
+        super(character);
+        autoFireRate = 20;
+        manualFireRate = 7;
+        maxSpread = 12F;
+        minSpread = 3F;
+        bulletForce = 1F;
     }
     
     @Override
     public void fireAuto(float angle) {
-        fireBullet(angle + (rand.nextFloat() * 2 - 1) * 3, bulletForce, BulletType.NORMAL);
+        fireBullet(angle + (rand.nextFloat() * 2F - 1F) * bulletSpread, bulletForce, BulletType.NORMAL);
     }
     
     @Override
     public void fireManual(float angle, int fireDelay) {
-        float bulletSpread = 8 - 8 / autoFireRate * fireDelay; // 8 is the max
-        // spread at
-        // minimum delay
-        
-        fireBullet(angle + (rand.nextFloat() * 2 - 1) * bulletSpread, bulletForce, BulletType.NORMAL);
-        
+        fireBullet(angle + (rand.nextFloat() * 2F - 1F) * bulletSpread, bulletForce, BulletType.NORMAL);
     }
-    
 }

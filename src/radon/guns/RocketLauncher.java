@@ -9,7 +9,7 @@ public class RocketLauncher extends Gun {
     public static final float bulletForce = 300;
     
     public RocketLauncher(Player p) {
-        super(p, autoFireRate, manualFireRate);
+        super(p);
     }
     
     @Override

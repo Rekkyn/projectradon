@@ -46,6 +46,8 @@ public class Player extends Character {
         float dy = GameWorld.mousePos(container).y - y;
         gunAngle = (float) (Math.atan2(dy, dx) * 180 / Math.PI);
         
+        selectedGun.calculateSpread(fireDelay);
+        
         if (shotToBeFired && fireDelay >= selectedGun.manualFireRate) {
             selectedGun.fireManual(gunAngle, fireDelay);
             fireDelay = 0;

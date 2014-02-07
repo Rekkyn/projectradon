@@ -26,7 +26,7 @@ public class GameWorld extends BasicGameState {
     public static Random rand = new Random();
     
     public static boolean gunFocus = true;
-    public static Vec2 gravity = new Vec2(0F, -9.8F);
+    public static Vec2 gravity = new Vec2(0F, -20F);
     public static Vector2f gravity1, gravity2;
     
     public static World physicsWorld = new World(GameWorld.gravity);
@@ -134,6 +134,8 @@ public class GameWorld extends BasicGameState {
         }
         Camera.update();
         
+        physicsWorld.step(1F / 60, 40, 20);
+        
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             
@@ -144,7 +146,6 @@ public class GameWorld extends BasicGameState {
             }
         }
         
-        physicsWorld.step(1F / 60, 40, 20);
         
         Visibility.load(entities);
         Visibility.setLightLocation(p.x, p.y);
@@ -228,6 +229,13 @@ public class GameWorld extends BasicGameState {
                 g.drawLine(gravity1.x, gravity1.y, gravity2.x, gravity2.y);
             }
         }
+        
+        float dis = (float) Math.sqrt((mousePos(container).x - p.x) * (mousePos(container).x - p.x) + (mousePos(container).y - p.y)
+                * (mousePos(container).y - p.y));
+        float radius = (float) (dis * Math.tan(p.selectedGun.bulletSpread * Math.PI / 180));
+        radius *= Camera.zoom;
+        g.setLineWidth(1);
+        g.drawOval(input.getMouseX() - radius, input.getMouseY() - radius, 2 * radius, 2 * radius);
         
     }
     

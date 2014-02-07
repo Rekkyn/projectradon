@@ -3,13 +3,14 @@ package radon.guns;
 import radon.Player;
 
 public class Shotgun extends Gun {
-    
-    public static final int autoFireRate = 75;
-    public static final int manualFireRate = 45;
-    public static final float bulletForce = 20;
-    
+
     public Shotgun(Player p) {
-        super(p, autoFireRate, manualFireRate);
+        super(p);
+        autoFireRate = 0;
+        manualFireRate = 45;
+        maxSpread = 12F;
+        minSpread = 3F;
+        bulletForce = 0.5F;
     }
     
     @Override

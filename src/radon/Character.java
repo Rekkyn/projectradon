@@ -166,22 +166,24 @@ public class Character extends Entity {
     }
     
     public void jump() {
+        float height = 15F;
         if (onGround) {
-            body.applyLinearImpulse(new Vec2(0, 10), body.getWorldCenter());
+            body.applyLinearImpulse(new Vec2(0, height), body.getWorldCenter());
         } else if (leftWall && rightWall) {
             // TODO: this
         } else if (leftWall) {
             body.setLinearVelocity(new Vec2(0, 0)); // TODO: this?
             body.applyLinearImpulse(
-                    new Vec2(body.getMass() * 10 * (float) Math.cos(Math.PI / 3), body.getMass() * 10 * (float) Math.sin(Math.PI / 3)),
-                    body.getWorldCenter());
+                    new Vec2(body.getMass() * height * (float) Math.cos(Math.PI / 3), body.getMass() * height
+                            * (float) Math.sin(Math.PI / 3)),
+                            body.getWorldCenter());
             body.setTransform(new Vec2(x + 0.01F, y), 0);
             walljumpCooldown = 13;
             wallcooldown = 11;
         } else if (rightWall) {
             body.setLinearVelocity(new Vec2(0, 0));
             body.applyLinearImpulse(
-                    new Vec2(body.getMass() * 10 * (float) Math.cos(2 * Math.PI / 3), body.getMass() * 10
+                    new Vec2(body.getMass() * height * (float) Math.cos(2 * Math.PI / 3), body.getMass() * height
                             * (float) Math.sin(2 * Math.PI / 3)),
                             body.getWorldCenter());
             body.setTransform(new Vec2(x - 0.01F, y), 0);
