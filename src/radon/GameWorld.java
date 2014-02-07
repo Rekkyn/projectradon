@@ -16,9 +16,9 @@ public class GameWorld extends BasicGameState {
     private Options o = Game.o;
     public static long tickCount = 0;
     public static float partialTicks;
-    public static float[] timespeeds = { 50F, 100F / 3F, 50F / 3F, 50F / 6F, 50F / 9F };
-    
-    public static float timestep = 50F / 3F; // 1/60 second
+    public static int timespeeds = 0;
+    public static final float BASESTEP = 50F / 3F;
+    public static float timestep = BASESTEP; // 1/60 second
     Player p = new Player(0, 40);
     
     public static List<Entity> entities = new ArrayList<Entity>();
@@ -50,13 +50,19 @@ public class GameWorld extends BasicGameState {
             o.setFullscreen(false);
         }
         
-        if (input.isKeyPressed(Input.KEY_COMMA) && o.getTimescale() != 0) {
-            Options.slowTime(1);
-            timestep = timespeeds[o.getTimescale()];
+        if (input.isKeyPressed(Input.KEY_COMMA)) {
+            timespeeds++;
         }
-        if (input.isKeyPressed(Input.KEY_PERIOD) && o.getTimescale() != timespeeds.length - 1) {
-            Options.speedTime(1);
-            timestep = timespeeds[o.getTimescale()];
+        if (input.isKeyPressed(Input.KEY_PERIOD)) {
+            timespeeds--;
+        }
+        
+        if (timespeeds > 0) {
+            timestep = BASESTEP * (timespeeds + 1);
+        } else if (timespeeds < 0) {
+            timestep = BASESTEP / (1 - timespeeds);
+        } else {
+            timestep = BASESTEP;
         }
         
         if (input.isKeyPressed(Input.KEY_V)) {
@@ -134,7 +140,7 @@ public class GameWorld extends BasicGameState {
         }
         Camera.update();
         
-        physicsWorld.step(1F / 60, 40, 20);
+        physicsWorld.step(BASESTEP / 1000, 40, 20);
         
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -190,7 +196,7 @@ public class GameWorld extends BasicGameState {
         }
         
         g.setColor(new Color(0, 0, 0));
-        Font.draw("Time speed: " + 50F / 3F / timestep, 20, 20, 2, g);
+        Font.draw("Time speed: " + BASESTEP / timestep, 20, 20, 2, g);
         Font.draw("FPS: " + Game.appgc.getFPS(), 20, 35, 2, g);
         
         g.pushTransform();

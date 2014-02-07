@@ -65,7 +65,7 @@ public class Menu extends BasicGameState {
         
         boolean fs = o.getFullscreen();
         boolean vis = o.getVisibility();
-        int ts = o.getTimescale();
+        int ts = GameWorld.timespeeds;
         
         String stringvis = "On";
         if (vis) {
