@@ -26,7 +26,12 @@ public class Bullet extends Entity {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         // super.render(container, game, g);
         g.setColor(col);
-        g.fillOval(x - 0.1F, -y - 0.1F, 0.2F, 0.2F);
+        g.pushTransform();
+        float angle = (float) (Math.atan2(velocity.y, velocity.x) * 180F / Math.PI);
+        g.rotate(x, -y, -angle);
+        g.fillRect(x - 0.2F, -y - 0.1F, 0.4F, 0.2F);
+        g.rotate(x, -y, angle);
+        g.popTransform();
     }
     
     @Override
@@ -36,7 +41,7 @@ public class Bullet extends Entity {
         CircleShape circle = new CircleShape();
         circle.setRadius(0.1f);
         fixture = body.createFixture(circle, 0);
-        fixture.setFriction(0.2F);
+        fixture.setFriction(2F);
         fixture.setDensity(0.5F);
         
         body.setBullet(true);
@@ -44,7 +49,7 @@ public class Bullet extends Entity {
         body.setLinearDamping(0.2F);
         fixture.setRestitution(restitution);
         fixture.m_filter.categoryBits = Filtering.BULLET;
-        fixture.m_filter.maskBits = Filtering.GROUND | Filtering.BULLET;
+        fixture.m_filter.maskBits = Filtering.GROUND;
     }
     
     @Override

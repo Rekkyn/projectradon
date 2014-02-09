@@ -10,7 +10,7 @@ public class Pistol extends Gun {
         manualFireRate = 7;
         maxSpread = 12F;
         minSpread = 3F;
-        bulletForce = 1F;
+        bulletForce = 0.7F;
     }
     
     @Override
