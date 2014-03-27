@@ -70,7 +70,6 @@ public class Player extends Character {
                 }
             }
         }
-        
         fireDelay++;
     }
     
@@ -83,5 +82,4 @@ public class Player extends Character {
         g.setColor(new Color(100, 100, 100));
         g.drawLine(x, -y, x + 1.5F * (float) Math.cos(gunAngle * Math.PI / 180), -y - 1.5F * (float) Math.sin(gunAngle * Math.PI / 180));
     }
-    
 }
