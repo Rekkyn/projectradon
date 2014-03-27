@@ -22,6 +22,7 @@ public class GameWorld extends BasicGameState {
     Player p = new Player(0, 40);
     
     public static List<Entity> entities = new ArrayList<Entity>();
+    public static Character[] characterList = new Character[17];
     
     public static Random rand = new Random();
     
@@ -170,6 +171,9 @@ public class GameWorld extends BasicGameState {
         physicsWorld.setContinuousPhysics(true);
         
         add(p);
+        
+        AI ai = new AI(0, 50);
+        add(ai);
         
         Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);

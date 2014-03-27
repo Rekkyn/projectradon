@@ -9,7 +9,6 @@ import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-import radon.GameWorld.Filtering;
 import radon.guns.Gun;
 import radon.guns.Pistol;
 
@@ -30,8 +29,9 @@ public class Character extends Entity {
     public List<Float> contactAngles = new ArrayList<Float>();
     public List<Float> groundAngles = new ArrayList<Float>();
     public float gunAngle;
+    public int ID;
     
-    public Character(float x, float y, boolean physicsactive) {
+    public Character(float x, float y) {
         super(x, y, BodyType.DYNAMIC);
         restitution = 0.0F;
         gravity = true;
@@ -40,6 +40,14 @@ public class Character extends Entity {
     @Override
     public void init() {
         super.init();
+        
+        for (int i = 1; i < GameWorld.characterList.length; i++) {
+            if (GameWorld.characterList[i] == null) {
+                GameWorld.characterList[i] = this;
+                ID = i;
+                break;
+            }
+        }
         
         CircleShape circle = new CircleShape();
         circle.setRadius(0.5f);
@@ -50,10 +58,16 @@ public class Character extends Entity {
         body.setFixedRotation(true);
         body.setUserData(this);
         fixture.setRestitution(restitution);
-        fixture.m_filter.categoryBits = Filtering.PLAYER;
-        fixture.m_filter.maskBits = Filtering.GROUND;
+        fixture.m_filter.categoryBits = (int) Math.pow(2, ID);
+        fixture.m_filter.maskBits = ~(int) Math.pow(2, ID);
     }
     
+    @Override
+    public void remove() {
+        super.remove();
+        GameWorld.characterList[ID] = null;
+    }
+
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
@@ -202,7 +216,7 @@ public class Character extends Entity {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         super.render(container, game, g);
-        g.setColor(onGround ? new Color(42, 47, 159) : new Color(0, 0, 0));
+        g.setColor(Color.black);
         g.fillOval(x - 0.5F, -y - 0.5F, 1F, 1F);
     }
     

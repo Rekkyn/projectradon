@@ -5,9 +5,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-import radon.*;
-import radon.GameWorld.Filtering;
 import radon.Character;
+import radon.Entity;
 
 public class Bullet extends Entity {
     public int ticksOnGround = 0;
@@ -37,25 +36,23 @@ public class Bullet extends Entity {
     @Override
     public void init() {
         super.init();
-        
+        setShape();
+        body.setBullet(true);
+        body.setFixedRotation(true);
+        fixture.setRestitution(restitution);
+        fixture.m_filter.categoryBits = (int) Math.pow(2, c.ID);
+        fixture.m_filter.maskBits = ~(int) Math.pow(2, c.ID);
+    }
+    
+    public void setShape() {
         CircleShape circle = new CircleShape();
         circle.setRadius(0.1f);
         fixture = body.createFixture(circle, 0);
         fixture.setFriction(2F);
         fixture.setDensity(0.5F);
-        
-        body.setBullet(true);
-        body.setFixedRotation(true);
         body.setLinearDamping(0.2F);
-        fixture.setRestitution(restitution);
-        fixture.m_filter.categoryBits = Filtering.BULLET;
-        fixture.m_filter.maskBits = Filtering.GROUND;
     }
     
-    public void subInit() {
-        super.init();
-    }
-
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
