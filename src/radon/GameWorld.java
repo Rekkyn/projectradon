@@ -140,7 +140,10 @@ public class GameWorld extends BasicGameState {
         }
         Camera.update();
         
-        physicsWorld.step(BASESTEP / 1000, 40, 20);
+        // final int SUBSTEPS = 3;
+        // for (int vlop = 0; vlop < SUBSTEPS; vlop++) {
+        physicsWorld.step(BASESTEP / 1000/*/SUBSTEPS*/, 40, 20);
+        // }
         
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -162,6 +165,7 @@ public class GameWorld extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         PlayerContactListener contlist = new PlayerContactListener();
         physicsWorld.setContactListener(contlist);
+        physicsWorld.setContinuousPhysics(true);
         
         add(p);
         
@@ -239,6 +243,11 @@ public class GameWorld extends BasicGameState {
         float dis = (float) Math.sqrt((mousePos(container).x - p.x) * (mousePos(container).x - p.x) + (mousePos(container).y - p.y)
                 * (mousePos(container).y - p.y));
         float radius = (float) (dis * Math.tan(p.selectedGun.bulletSpread * Math.PI / 180));
+        if (radius > 4) {
+            g.setColor(new Color(0, 0, 0, -1F / 3F * (radius - 7F)));
+        } else {
+            g.setColor(Color.black);
+        }
         radius *= Camera.zoom;
         g.setLineWidth(1);
         g.drawOval(input.getMouseX() - radius, input.getMouseY() - radius, 2 * radius, 2 * radius);

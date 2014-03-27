@@ -1,33 +1,29 @@
 package radon.guns;
 
-import radon.Player;
+import radon.Character;
 
 public class Shotgun extends Gun {
-
-    public Shotgun(Player p) {
-        super(p);
+    
+    public Shotgun(Character c) {
+        super(c);
         autoFireRate = 0;
         manualFireRate = 45;
-        maxSpread = 12F;
-        minSpread = 3F;
+        minSpread = maxSpread = 5F;
         bulletForce = 0.5F;
     }
     
     @Override
-    public void fireAuto(float angle) {
-        for (int i = 0; i < 7; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 3 - 1) * (2 * c.velocity.length() + 5);
-            
-            fireBullet(angleSpread, bulletForce, BulletType.NORMAL);
+    public void fireAuto(float angle) {}
+    
+    @Override
+    public void fireManual(float angle, int fireDelay) {
+        for (int i = 0; i < 10; i++) {
+            fireBullet(angle + (rand.nextFloat() * 2F - 1F) * bulletSpread, bulletForce, BulletType.PELLET);
         }
     }
     
     @Override
-    public void fireManual(float angle, int fireDelay) {
-        for (int i = 0; i < 7; i++) {
-            float angleSpread = angle + (rand.nextFloat() * 3 - 1) * (2 * c.velocity.length() + 5);
-            
-            fireBullet(angleSpread, bulletForce, BulletType.NORMAL);
-        }
+    public void calculateSpread(int fireDelay) {
+        bulletSpread = c.velocity.length() + minSpread;
     }
 }

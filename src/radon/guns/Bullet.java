@@ -52,6 +52,10 @@ public class Bullet extends Entity {
         fixture.m_filter.maskBits = Filtering.GROUND;
     }
     
+    public void subInit() {
+        super.init();
+    }
+
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);

@@ -21,7 +21,7 @@ public abstract class Gun {
     public float bulletForce;
     
     public enum BulletType {
-        NORMAL, HEAVY, ROCKET
+        NORMAL, HEAVY, ROCKET, PELLET
     }
     
     public Gun(Character character) {
@@ -40,6 +40,9 @@ public abstract class Gun {
                 break;
             case ROCKET:
                 b = new RocketBullet(c);
+                break;
+            case PELLET:
+                b = new Pellet(c);
                 break;
             default:
                 b = new Bullet(c);

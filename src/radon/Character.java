@@ -26,6 +26,7 @@ public class Character extends Entity {
     public boolean rightWall;
     public int wallcooldown;
     public int walljumpCooldown;
+    public static final int WALLJUMPDELAY = 15;
     public List<Float> contactAngles = new ArrayList<Float>();
     public List<Float> groundAngles = new ArrayList<Float>();
     public float gunAngle;
@@ -107,7 +108,7 @@ public class Character extends Entity {
                     break;
             }
             float velChange = desiredVel - groundvel;
-            float impulse = body.getMass() * velChange; // disregard time factor
+            float impulse = body.getMass() * velChange;
             Vec2 impulsevec = new Vec2(impulse * (float) Math.sin(Math.toRadians(groundAngles.get(0))), impulse
                     * (float) -Math.cos(Math.toRadians(groundAngles.get(0))));
             body.applyLinearImpulse(impulsevec, body.getWorldCenter());
@@ -128,7 +129,8 @@ public class Character extends Entity {
                         wallcooldown++;
                     }
                     if (!rightWall && !leftWall || rightWall && wallcooldown > 10) {
-                        if (velocity.x >= -speed && walljumpCooldown == 0) {
+                        if (velocity.x >= -speed) {
+                            change *= -walljumpCooldown / (float) WALLJUMPDELAY + 1;
                             desiredVel = velocity.x - change > -speed ? velocity.x - change : -speed;
                         } else {
                             desiredVel = velocity.x;
@@ -151,7 +153,8 @@ public class Character extends Entity {
                         wallcooldown++;
                     }
                     if (!rightWall && !leftWall || leftWall && wallcooldown > 10) {
-                        if (velocity.x <= speed && walljumpCooldown == 0) {
+                        if (velocity.x <= speed) {
+                            change *= -walljumpCooldown / (float) WALLJUMPDELAY + 1;
                             desiredVel = velocity.x + change < speed ? velocity.x + change : speed;
                         } else {
                             desiredVel = velocity.x;
@@ -178,7 +181,7 @@ public class Character extends Entity {
                             * (float) Math.sin(Math.PI / 3)),
                             body.getWorldCenter());
             body.setTransform(new Vec2(x + 0.01F, y), 0);
-            walljumpCooldown = 13;
+            walljumpCooldown = WALLJUMPDELAY;
             wallcooldown = 11;
         } else if (rightWall) {
             body.setLinearVelocity(new Vec2(0, 0));
@@ -187,7 +190,7 @@ public class Character extends Entity {
                             * (float) Math.sin(2 * Math.PI / 3)),
                             body.getWorldCenter());
             body.setTransform(new Vec2(x - 0.01F, y), 0);
-            walljumpCooldown = 13;
+            walljumpCooldown = WALLJUMPDELAY;
             wallcooldown = 11;
         }
     }
