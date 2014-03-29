@@ -30,11 +30,13 @@ public class Character extends Entity {
     public List<Float> groundAngles = new ArrayList<Float>();
     public float gunAngle;
     public int ID;
+    public int health, maxhealth;
     
     public Character(float x, float y) {
         super(x, y, BodyType.DYNAMIC);
         restitution = 0.0F;
         gravity = true;
+        health = maxhealth = 100;
     }
     
     @Override
@@ -67,7 +69,7 @@ public class Character extends Entity {
         super.remove();
         GameWorld.characterList[ID] = null;
     }
-
+    
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         super.update(container, game, delta);
@@ -190,19 +192,15 @@ public class Character extends Entity {
             // TODO: this
         } else if (leftWall) {
             body.setLinearVelocity(new Vec2(0, 0)); // TODO: this?
-            body.applyLinearImpulse(
-                    new Vec2(body.getMass() * height * (float) Math.cos(Math.PI / 3), body.getMass() * height
-                            * (float) Math.sin(Math.PI / 3)),
-                            body.getWorldCenter());
+            body.applyLinearImpulse(new Vec2(body.getMass() * height * (float) Math.cos(Math.PI / 3), body.getMass() * height
+                    * (float) Math.sin(Math.PI / 3)), body.getWorldCenter());
             body.setTransform(new Vec2(x + 0.01F, y), 0);
             walljumpCooldown = WALLJUMPDELAY;
             wallcooldown = 11;
         } else if (rightWall) {
             body.setLinearVelocity(new Vec2(0, 0));
-            body.applyLinearImpulse(
-                    new Vec2(body.getMass() * height * (float) Math.cos(2 * Math.PI / 3), body.getMass() * height
-                            * (float) Math.sin(2 * Math.PI / 3)),
-                            body.getWorldCenter());
+            body.applyLinearImpulse(new Vec2(body.getMass() * height * (float) Math.cos(2 * Math.PI / 3), body.getMass() * height
+                    * (float) Math.sin(2 * Math.PI / 3)), body.getWorldCenter());
             body.setTransform(new Vec2(x - 0.01F, y), 0);
             walljumpCooldown = WALLJUMPDELAY;
             wallcooldown = 11;
@@ -218,6 +216,9 @@ public class Character extends Entity {
         super.render(container, game, g);
         g.setColor(Color.black);
         g.fillOval(x - 0.5F, -y - 0.5F, 1F, 1F);
+        g.scale(1F / Camera.zoom, 1F / Camera.zoom);
+        Font.centerText("" + health, x * Camera.zoom, (-y - 1.5F) * Camera.zoom, 2, g);
+        g.scale(Camera.zoom, Camera.zoom);
     }
     
 }

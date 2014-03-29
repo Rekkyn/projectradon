@@ -19,7 +19,7 @@ public class Font {
             Input.KEY_K, Input.KEY_L, Input.KEY_M, Input.KEY_N, Input.KEY_O, Input.KEY_P, Input.KEY_Q, Input.KEY_R, Input.KEY_S,
             Input.KEY_T, Input.KEY_U, Input.KEY_V, Input.KEY_W, Input.KEY_X, Input.KEY_Y, Input.KEY_Z, };
     
-    public static void draw(String s, int x, int y, int scale, Graphics g) throws SlickException {
+    public static void draw(String s, float x, float y, int scale, Graphics g) throws SlickException {
         s = s.toUpperCase();
         Image font = Game.scaleImage(new Image("images/Font.png"), scale);
         int offset = 0;
@@ -36,13 +36,13 @@ public class Font {
         }
     }
     
-    public static void centerText(String s, int x, int y, int scale, Graphics g) throws SlickException {
+    public static void centerText(String s, float x, float y, int scale, Graphics g) throws SlickException {
         int width = 0;
         s = s.toUpperCase();
         for (int i = 0; i < s.length(); i++) {
             width += getCharWidth(s.charAt(i), scale);
         }
-        int newX = x - width / 2;
+        float newX = x - width / 2;
         draw(s, newX, y, scale, g);
     }
     

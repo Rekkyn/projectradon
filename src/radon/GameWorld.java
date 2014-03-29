@@ -154,10 +154,10 @@ public class GameWorld extends BasicGameState {
             e.update(container, game, delta);
             
             if (e.removed) {
+                physicsWorld.destroyBody(e.body);
                 entities.remove(i--);
             }
         }
-        
         
         Visibility.load(entities);
         Visibility.setLightLocation(p.x, p.y);
@@ -172,13 +172,15 @@ public class GameWorld extends BasicGameState {
         
         add(p);
         
-        AI ai = new AI(0, 50);
-        add(ai);
+        for (int lol = 0; lol < 10; lol++) {
+            AI ai = new AI(0, 50);
+            add(ai);
+        }
         
         Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
-        while (entities.size() < 150) {
+        /*while (entities.size() < 150) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * 80 - 40, rand.nextFloat() * 80 - 40, 57, 90, 200, rand.nextFloat() * 5 + 1,
                     rand.nextFloat() * 5 + 1, true);
             boolean add = true;
@@ -186,7 +188,7 @@ public class GameWorld extends BasicGameState {
                 if (db.intersects(LOL)) add = false;
             }
             if (add) add(db);
-        }
+        }*/
         
     }
     

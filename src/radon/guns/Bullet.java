@@ -39,6 +39,7 @@ public class Bullet extends Entity {
         setShape();
         body.setBullet(true);
         body.setFixedRotation(true);
+        body.setUserData(this);
         fixture.setRestitution(restitution);
         fixture.m_filter.categoryBits = (int) Math.pow(2, c.ID);
         fixture.m_filter.maskBits = ~(int) Math.pow(2, c.ID);

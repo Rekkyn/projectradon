@@ -43,7 +43,6 @@ public abstract class Entity {
     
     public void remove() {
         removed = true;
-        physicsWorld.destroyBody(body);
     }
     
     public boolean intersects(Entity e) {
