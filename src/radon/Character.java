@@ -43,14 +43,6 @@ public class Character extends Entity {
     public void init() {
         super.init();
         
-        for (int i = 1; i < GameWorld.characterList.length; i++) {
-            if (GameWorld.characterList[i] == null) {
-                GameWorld.characterList[i] = this;
-                ID = i;
-                break;
-            }
-        }
-        
         CircleShape circle = new CircleShape();
         circle.setRadius(0.5f);
         fixture = body.createFixture(circle, 0);
@@ -59,15 +51,7 @@ public class Character extends Entity {
         body.setBullet(true);
         body.setFixedRotation(true);
         body.setUserData(this);
-        fixture.setRestitution(restitution);
-        fixture.m_filter.categoryBits = (int) Math.pow(2, ID);
-        fixture.m_filter.maskBits = ~(int) Math.pow(2, ID);
-    }
-    
-    @Override
-    public void remove() {
-        super.remove();
-        GameWorld.characterList[ID] = null;
+        fixture.setRestitution(restitution);;
     }
     
     @Override

@@ -168,6 +168,8 @@ public class GameWorld extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         PlayerContactListener contlist = new PlayerContactListener();
         physicsWorld.setContactListener(contlist);
+        RadonContactFilter filter = new RadonContactFilter();
+        physicsWorld.setContactFilter(filter);
         physicsWorld.setContinuousPhysics(true);
         
         add(p);
@@ -180,7 +182,7 @@ public class GameWorld extends BasicGameState {
         Wall w = new Wall(0, -15, 242, 224, 42, Game.width / 20, 0.5F);
         add(w);
         
-        /*while (entities.size() < 150) {
+        while (entities.size() < 150) {
             DynamicBox db = new DynamicBox(rand.nextFloat() * 80 - 40, rand.nextFloat() * 80 - 40, 57, 90, 200, rand.nextFloat() * 5 + 1,
                     rand.nextFloat() * 5 + 1, true);
             boolean add = true;
@@ -188,13 +190,14 @@ public class GameWorld extends BasicGameState {
                 if (db.intersects(LOL)) add = false;
             }
             if (add) add(db);
-        }*/
+        }
         
     }
     
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         Input input = container.getInput();
+        g.setAntiAlias(true);
         
         g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, Game.width, Game.height);

@@ -35,7 +35,7 @@ public class PlayerContactListener implements ContactListener {
     
     public void doDamage(Character c, Bullet b) {
         Vec2 vel = b.velocity.sub(c.velocity);
-        if (vel.length() < 5 || b.velocity.length() < 5) return;
+        if (vel.length() < 20 || b.velocity.length() < 20) return;
         b.remove();
         c.health -= b.velocity.length() * 0.5F;
         if (c.health <= 0) c.remove();

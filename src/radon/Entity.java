@@ -83,7 +83,6 @@ public abstract class Entity {
     
     public void prerender(Graphics g) {
         g.pushTransform();
-        g.setAntiAlias(true);
         g.scale(Camera.zoom, Camera.zoom);
         g.translate(GameWorld.partialTicks * (x - prevX) - Camera.x + Game.width / Camera.zoom / 2, GameWorld.partialTicks * (prevY - y)
                 + Camera.y + Game.height / Camera.zoom / 2);

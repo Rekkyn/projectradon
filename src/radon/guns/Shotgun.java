@@ -9,7 +9,7 @@ public class Shotgun extends Gun {
         autoFireRate = 0;
         manualFireRate = 45;
         minSpread = maxSpread = 5F;
-        bulletForce = 0.5F;
+        bulletForce = 0.3F;
     }
     
     @Override
